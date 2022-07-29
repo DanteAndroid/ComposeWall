@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ComposeWall</string>
+    <string name="hint">Select a different one?</string>
+</resources>
