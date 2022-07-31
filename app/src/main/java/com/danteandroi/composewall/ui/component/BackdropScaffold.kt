@@ -1,6 +1,9 @@
 package com.danteandroi.composewall.ui.component
 
-import androidx.compose.material.*
+import androidx.compose.material.BackdropScaffold
+import androidx.compose.material.BackdropValue
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,7 +22,7 @@ fun BackdropScaffold(
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     var currentMenu by remember {
-        mutableStateOf(MainMenus.first())
+        mutableStateOf(0)
     }
     val coroutine = rememberCoroutineScope()
     fun setMenuVisible(visible: Boolean) {
@@ -50,7 +53,7 @@ fun BackdropScaffold(
             )
         },
         frontLayerContent = {
-            TabScreen(menuItem = currentMenu)
+            TabScreen(menuItem = MainMenus[currentMenu])
         }
     )
 }

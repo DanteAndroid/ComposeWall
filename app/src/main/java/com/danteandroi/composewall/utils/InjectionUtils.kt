@@ -1,7 +1,5 @@
 package com.danteandroi.composewall.utils
 
-import com.danteandroi.composewall.data.ImageParser
-import com.danteandroi.composewall.net.ImageRepository
 import com.danteandroi.composewall.net.ImageViewModel
 
 /**
@@ -10,8 +8,8 @@ import com.danteandroi.composewall.net.ImageViewModel
  */
 object InjectionUtils {
 
-    fun provideImageViewModel(parser: ImageParser) = ImageViewModel(provideImageRepository(parser))
-
-    fun provideImageRepository(parser: ImageParser) = ImageRepository(parser)
+    fun provideImageViewModel() = ImageViewModel()
+//
+//    fun provideImageRepository(parser: ImageParser) = ImageRepository(parser)
 
 }

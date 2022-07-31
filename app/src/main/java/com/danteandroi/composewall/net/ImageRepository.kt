@@ -13,21 +13,22 @@ import kotlinx.coroutines.withContext
  * @author Du Wenyu
  * 2022/7/29
  */
-class ImageRepository(private val imageParser: ImageParser) {
+object ImageRepository {
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun fetchImages(page: Int): List<Image> {
+    suspend fun fetchImages(imageParser: ImageParser, page: Int): List<Image> {
         return withContext(Dispatchers.IO) {
             when (imageParser.apiClazz) {
                 WallHaven::class.java -> {
                     val isRandom = imageParser.category == API.CATE_WH_RANDOM
-                    val result = NetService.getInstance().createApi<WallHaven>(imageParser.baseUrl).getWalls(
-                        type = if (isRandom) "" else imageParser.category,
-                        ratios = if (isRandom) WALL_HAVEN_PORTRAIT_RATIOS else WALL_HAVEN_RATIOS,
-                        atLeast = if (isRandom) BETTER_RESOLUTION else AT_LEAST_RESOLUTION,
-                        page = page,
-                        sort = if (isRandom) WallHaven.SORT_RANDOM else WallHaven.SORT_RELEVANCE
-                    )
+                    val result =
+                        NetService.getInstance().createApi<WallHaven>(imageParser.baseUrl).getWalls(
+                            type = if (isRandom) "" else imageParser.category,
+                            ratios = if (isRandom) WALL_HAVEN_PORTRAIT_RATIOS else WALL_HAVEN_RATIOS,
+                            atLeast = if (isRandom) BETTER_RESOLUTION else AT_LEAST_RESOLUTION,
+                            page = page,
+                            sort = if (isRandom) WallHaven.SORT_RANDOM else WallHaven.SORT_RELEVANCE
+                        )
                     getImages(
                         imageParser,
                         result.string()

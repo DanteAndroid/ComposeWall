@@ -1,7 +1,6 @@
 package com.danteandroi.composewall.data
 
 import androidx.compose.runtime.Immutable
-import com.danteandroi.composewall.MenuItem
 import java.util.Date
 
 /**
@@ -19,4 +18,7 @@ data class Image(
 )
 
 @Immutable
-data class ImageUiState(val spanCount :Int = 2, val images: List<Image> = arrayListOf())
+data class ImageUiState(
+    val spanCount: Int = 3,
+    val images: List<Image> = arrayListOf()
+)

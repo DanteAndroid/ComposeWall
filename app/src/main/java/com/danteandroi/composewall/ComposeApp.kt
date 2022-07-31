@@ -1,6 +1,8 @@
 package com.danteandroi.composewall
 
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.danteandroi.composewall.ui.component.BackdropScaffold
 import com.danteandroi.composewall.ui.theme.ComposeWallTheme
@@ -12,7 +14,7 @@ import com.danteandroi.composewall.ui.theme.ComposeWallTheme
 @Composable
 fun ComposeApp() {
     ComposeWallTheme {
-        BackdropScaffold()
+        BackdropScaffold(Modifier.statusBarsPadding())
     }
 }
 

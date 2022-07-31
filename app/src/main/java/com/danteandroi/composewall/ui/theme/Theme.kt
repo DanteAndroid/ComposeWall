@@ -2,9 +2,12 @@ package com.danteandroi.composewall.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 private val LightColors = lightColorScheme(
@@ -76,6 +79,16 @@ fun ComposeWallTheme(
     } else {
         DarkColors
     }
+
+    val systemUiController = rememberSystemUiController()
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = Color.Transparent,
+            darkIcons = useDarkTheme
+        )
+        // setStatusBarColor() and setNavigationBarColor() also exist
+    }
+
     MaterialTheme(
         colorScheme = colors,
         content = content,

@@ -63,7 +63,7 @@ class ImageParser(
         )
 
         val YandeParsers = listOf(
-            ImageParser(Yande::class.java, API.YANDE_BASE, parser = YandeParser)
+            ImageParser(Yande::class.java, API.YANDE_BASE, category = "yande", parser = YandeParser)
         )
     }
 }

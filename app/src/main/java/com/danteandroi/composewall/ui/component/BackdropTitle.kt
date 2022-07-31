@@ -35,7 +35,7 @@ fun BackdropTitle(
             text = title,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.titleMedium
         )
         Spacer(modifier = modifier.height(16.dp))
     }

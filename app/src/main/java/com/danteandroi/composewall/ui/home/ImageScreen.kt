@@ -1,14 +1,20 @@
 package com.danteandroi.composewall.ui.home
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import com.danteandroi.composewall.R
-import com.danteandroi.composewall.data.Image
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.danteandroi.composewall.data.ImageUiState
 
 /**
@@ -20,15 +26,27 @@ fun ImageScreen(
     modifier: Modifier = Modifier,
     uiState: ImageUiState
 ) {
-    LazyVerticalGrid(
-        modifier = modifier,
-        columns = GridCells.Fixed(uiState.spanCount), content = {
-            items(uiState.images.size) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                    contentDescription = "logo"
-                )
-            }
-        })
-
+    if (uiState.images.isEmpty()) {
+        CircularProgressIndicator()
+    } else {
+        LazyVerticalGrid(
+            modifier = modifier,
+            columns = GridCells.Fixed(uiState.spanCount), content = {
+                items(uiState.images.size) {
+                    AsyncImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(80.dp, 180.dp)
+                            .padding(2.dp)
+                            .clip(RoundedCornerShape(2.dp)),
+                        contentScale = ContentScale.FillWidth,
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(uiState.images[it].thumbnail)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "image"
+                    )
+                }
+            })
+    }
 }

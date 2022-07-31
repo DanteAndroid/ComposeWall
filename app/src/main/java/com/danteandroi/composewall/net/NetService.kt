@@ -2,14 +2,13 @@ package com.danteandroi.composewall.net
 
 import android.annotation.SuppressLint
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.ramcosta.composedestinations.BuildConfig
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.security.cert.X509Certificate
-import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLContext
 import javax.net.ssl.X509TrustManager
 
@@ -47,6 +46,7 @@ class NetService private constructor(val url: String = "") {
         return createRetrofit(baseUrl, okHttpClient).create(T::class.java)
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     fun createRetrofit(
         baseUrl: String,
         okHttpClient: OkHttpClient = createOkHttpClient()
@@ -74,6 +74,7 @@ class NetService private constructor(val url: String = "") {
             .addInterceptor(loggingInterceptor)
     }
 
+    @SuppressLint("CustomX509TrustManager")
     fun createUnsafeTrustManager(): X509TrustManager {
         return object : X509TrustManager {
             @SuppressLint("TrustAllX509TrustManager")
@@ -84,7 +85,7 @@ class NetService private constructor(val url: String = "") {
             override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
             }
 
-            override fun getAcceptedIssuers(): Array<out X509Certificate>? {
+            override fun getAcceptedIssuers(): Array<out X509Certificate> {
                 return emptyArray()
             }
         }

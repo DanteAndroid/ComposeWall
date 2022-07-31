@@ -22,38 +22,43 @@ import com.danteandroi.composewall.MenuItem.Companion.MainMenus
 fun BackdropMenu(
     modifier: Modifier = Modifier,
     menus: List<MenuItem>,
-    onMenuSelected: (menu: MenuItem) -> Unit = {}
+    onMenuSelected: (index: Int) -> Unit = {}
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        menus.forEach {
+        menus.forEachIndexed { index, menuItem ->
             Menu(
                 modifier = modifier
-                    .height(54.dp)
-                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+                    .height(48.dp)
                     .clickable {
-                        onMenuSelected.invoke(it)
+                        onMenuSelected.invoke(index)
                     },
-                menu = it
+                menu = menuItem
             )
         }
+        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 
 @Composable
 fun Menu(modifier: Modifier = Modifier, menu: MenuItem) {
-    Text(
-        modifier = modifier,
-        text = menu.name,
-        style = MaterialTheme.typography.titleMedium.copy(
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.secondary
-        ),
-        textAlign = TextAlign.Center
-    )
+    Box(modifier = modifier) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center),
+            text = menu.name,
+            style = MaterialTheme.typography.titleSmall.copy(
+                fontWeight = FontWeight.Light,
+                color = MaterialTheme.colorScheme.onPrimary
+            ),
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 @Preview(showBackground = true)
