@@ -33,6 +33,7 @@ fun ImageScreen(
             modifier = modifier,
             columns = GridCells.Fixed(uiState.spanCount), content = {
                 items(uiState.images.size) {
+                    val thumbnail = uiState.images[it].thumbnail
                     AsyncImage(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -41,7 +42,7 @@ fun ImageScreen(
                             .clip(RoundedCornerShape(2.dp)),
                         contentScale = ContentScale.FillWidth,
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(uiState.images[it].thumbnail)
+                            .data(thumbnail)
                             .crossfade(true)
                             .build(),
                         contentDescription = "image"
