@@ -4,6 +4,7 @@ import com.danteandroi.composewall.utils.PC_USER_AGENT
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -11,7 +12,6 @@ import retrofit2.http.Query
  * 2019-08-23
  */
 interface WallHaven {
-
     companion object {
         const val WALL_HAVEN_RATIOS = "9x16,1x1,10x16,3x2,9x18,4x3,5x4"
         const val WALL_HAVEN_PORTRAIT_RATIOS = "9x16,1x1,10x16,9x18"
@@ -22,7 +22,6 @@ interface WallHaven {
         const val SORT_RANDOM = "random"
         const val SORT_RELEVANCE = "relevance"
     }
-
     @Headers("User-Agent: $PC_USER_AGENT")
     @GET("search")
     suspend fun getWalls(
@@ -35,9 +34,19 @@ interface WallHaven {
 }
 
 interface Yande {
-
     @Headers("User-Agent: $PC_USER_AGENT")
     @GET("/post")
     suspend fun getYande(@Query("page") page: Int): ResponseBody
+}
 
+interface Mania {
+    @Headers("User-Agent: $PC_USER_AGENT")
+    @GET("phone/wallpapers/{type}")
+    suspend fun getPosters(@Path("type") type: String, @Query("offset") index: Int): ResponseBody
+}
+
+interface Bcoderss {
+    @Headers("User-Agent: $PC_USER_AGENT")
+    @GET("tag/{type}/page/{page}")
+    suspend fun getPosters(@Path("type") type: String, @Path("page") page: Int): ResponseBody
 }

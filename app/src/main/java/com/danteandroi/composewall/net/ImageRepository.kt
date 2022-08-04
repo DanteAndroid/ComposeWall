@@ -20,7 +20,7 @@ object ImageRepository {
         return withContext(Dispatchers.IO) {
             when (imageParser.apiClazz) {
                 WallHaven::class.java -> {
-                    val isRandom = imageParser.category == API.CATE_WH_RANDOM
+                    val isRandom = imageParser.category == WallHaven.SORT_RANDOM
                     val result =
                         NetService.getInstance().createApi<WallHaven>(imageParser.baseUrl).getWalls(
                             type = if (isRandom) "" else imageParser.category,
@@ -35,11 +35,19 @@ object ImageRepository {
                     )
                 }
                 Yande::class.java -> {
-                    val result =  NetService.getInstance().createApi<Yande>(imageParser.baseUrl)
+                    val result = NetService.getInstance().createApi<Yande>(imageParser.baseUrl)
                         .getYande(page)
-                    getImages(imageParser,
-                       result.string()
-                    )
+                    getImages(imageParser, result.string())
+                }
+                Mania::class.java -> {
+                    val result = NetService.getInstance().createApi<Mania>(imageParser.baseUrl)
+                        .getPosters(imageParser.category, (page - 1) * 30)
+                    getImages(imageParser, result.string())
+                }
+                Bcoderss::class.java -> {
+                    val result = NetService.getInstance().createApi<Bcoderss>(imageParser.baseUrl)
+                        .getPosters(imageParser.category, page)
+                    getImages(imageParser, result.string())
                 }
                 else -> throw IllegalStateException("${imageParser.apiClazz.name} not implemented in ${javaClass.canonicalName}")
             }
@@ -47,7 +55,7 @@ object ImageRepository {
     }
 
 
-    private fun getImages(parser: ImageParser, data: String): List<Image> {
+    private suspend fun getImages(parser: ImageParser, data: String): List<Image> {
         return parser.parser.parseImages(parser.apiClazz.simpleName, data)
     }
 

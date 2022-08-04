@@ -1,10 +1,8 @@
 package com.danteandroi.composewall
 
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.danteandroi.composewall.ui.component.BackdropScaffold
 import com.danteandroi.composewall.ui.theme.ComposeWallTheme
 
 /**
@@ -12,9 +10,12 @@ import com.danteandroi.composewall.ui.theme.ComposeWallTheme
  * 2022/7/29
  */
 @Composable
-fun ComposeApp() {
+fun ComposeApp(sizeClass: WindowSizeClass? = null) {
     ComposeWallTheme {
-        BackdropScaffold(Modifier.statusBarsPadding())
+        ComposeNavGraph(
+            appState = rememberComposeAppState(),
+            sizeClass = sizeClass
+        )
     }
 }
 

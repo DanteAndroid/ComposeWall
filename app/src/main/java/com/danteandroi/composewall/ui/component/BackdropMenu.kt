@@ -21,26 +21,47 @@ import com.danteandroi.composewall.MenuItem.Companion.MainMenus
 @Composable
 fun BackdropMenu(
     modifier: Modifier = Modifier,
+    isExpandedScreen: Boolean = false,
     menus: List<MenuItem>,
     onMenuSelected: (index: Int) -> Unit = {}
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        menus.forEachIndexed { index, menuItem ->
-            Menu(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .clickable {
-                        onMenuSelected.invoke(index)
-                    },
-                menu = menuItem
-            )
+    if (isExpandedScreen) {
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+        ) {
+            menus.forEachIndexed { index, menuItem ->
+                Menu(
+                    modifier = modifier
+                        .weight(1f)
+                        .height(48.dp)
+                        .clickable {
+                            onMenuSelected.invoke(index)
+                        },
+                    menu = menuItem
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
         }
-        Spacer(modifier = Modifier.height(12.dp))
+    } else {
+        Column(
+            modifier = modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            menus.forEachIndexed { index, menuItem ->
+                Menu(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                        .clickable {
+                            onMenuSelected.invoke(index)
+                        },
+                    menu = menuItem
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+        }
     }
 }
 

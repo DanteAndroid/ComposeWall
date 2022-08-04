@@ -10,13 +10,14 @@ object API {
 
     const val WALL_BASE = "https://wallhaven.cc/"
     const val YANDE_BASE = "https://yande.re/"
+    const val MANIA_BASE = "https://www.moviemania.io/"
+    const val BCODERSS_BASE = "https://m.bcoderss.com/"
 
-    //wall haven
-    const val CATE_WH_GIRL = "girl"
-    const val CATE_WH_RANDOM = "random"
-    const val CATE_WH_ANIME = "anime"
-    const val CATE_WH_FANTASY = "fantasy"
-    const val CATE_WH_LANDSCAPE = "landscape"
-    const val CATE_WH_DARK = "dark"
-    const val CATE_WH_SIMPLE = "simple"
+    val wallHavenCategories =
+        arrayOf("random", "anime", "girl", "fantasy", "landscape", "dark", "simple")
+    val maniaCategories =
+        arrayOf("popular", "trending", "new")
+    val bcoderssCategories =
+        arrayOf("动物", "风景", "美女", "动漫", "抽象", "游戏", "4K", "黑色")
+
 }

@@ -22,6 +22,7 @@ import com.danteandroi.composewall.R
 @Composable
 fun BackdropTitle(
     modifier: Modifier = Modifier,
+    isExpandedScreen: Boolean = false,
     title: String = stringResource(id = R.string.app_name),
     onTitleClick: () -> Unit = {}
 ) {
@@ -29,7 +30,8 @@ fun BackdropTitle(
         .clickable {
             onTitleClick.invoke()
         }) {
-        Spacer(modifier = modifier.height(16.dp))
+        val spaceHeight = if (isExpandedScreen) 8.dp else 16.dp
+        Spacer(modifier = modifier.height(spaceHeight))
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = title,
@@ -37,7 +39,7 @@ fun BackdropTitle(
             color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.titleMedium
         )
-        Spacer(modifier = modifier.height(16.dp))
+        Spacer(modifier = modifier.height(spaceHeight))
     }
 }
 

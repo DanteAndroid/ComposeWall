@@ -3,6 +3,7 @@ buildscript {
         compose_version = '1.2.0'
         accompanist_version = '0.25.0'
         compose_destinations_version = '1.6.14-beta'
+        navigation_version = '2.4.2'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

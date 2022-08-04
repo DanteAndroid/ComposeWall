@@ -6,19 +6,18 @@ import org.jsoup.Jsoup
 import java.io.IOException
 
 /**
- * @author Dante
- * 2019-09-03
+ * @author Du Wenyu
+ * 2019-09-05
  */
-object WallParser : IParser {
+object BcoderssParser : IParser {
 
     override suspend fun parseImages(type: String, data: String): List<Image> {
         val images = arrayListOf<Image>()
         val document = Jsoup.parse(data)
-        val elements = document.select("div[id=thumbs] figure")
+        val elements = document.select("ul[class=wallpaper] li")
         for (element in elements) {
             try {
-                val img = element.selectFirst("img")
-                val url = img?.attr("data-src")
+                val url = element.selectFirst("img")?.attr("src")
                 if (url.isNullOrBlank()) continue
                 val originalUrl = getOriginalUrl(url)
                 val refer = element.selectFirst("a")?.attr("href").orEmpty()
@@ -39,8 +38,8 @@ object WallParser : IParser {
     }
 
     private fun getOriginalUrl(thumbUrl: String): String {
-        val id = thumbUrl.substringAfterLast("/").substringBefore(".")
-        val tail = thumbUrl.substringAfterLast("small").replace(id, "wallhaven-$id")
-        return "https://w.wallhaven.cc/full${tail}"
+        val end = "-${thumbUrl.substringAfterLast("-")}"
+        return thumbUrl.replace("https://m.bcoderss.com/", "http://img1.bcoderss.com/")
+            .replace(end, ".jpg")
     }
 }

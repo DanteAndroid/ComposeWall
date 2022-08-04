@@ -4,10 +4,12 @@ import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBackdropScaffoldState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.danteandroi.composewall.MenuItem.Companion.MainMenus
+import com.danteandroi.composewall.net.ImageViewModel
 import com.danteandroi.composewall.ui.home.TabScreen
 import kotlinx.coroutines.launch
 
@@ -18,42 +20,50 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BackdropScaffold(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isExpandedScreen: Boolean = false,
+    onViewImage: (String, ImageViewModel) -> Unit = { _, _ -> }
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     var currentMenu by remember {
         mutableStateOf(0)
     }
     val coroutine = rememberCoroutineScope()
-    fun setMenuVisible(visible: Boolean) {
-        coroutine.launch {
-            if (visible) {
-                scaffoldState.reveal()
-            } else {
-                scaffoldState.conceal()
-            }
-        }
-    }
-
     BackdropScaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
+        backLayerBackgroundColor = MaterialTheme.colorScheme.primary,
         appBar = {
-            BackdropTitle(onTitleClick = {
-                setMenuVisible(true)
-            })
+            BackdropTitle(
+                isExpandedScreen = isExpandedScreen,
+                onTitleClick = {
+                    coroutine.launch {
+                        if (scaffoldState.isConcealed) {
+                            scaffoldState.reveal()
+                        } else {
+                            scaffoldState.conceal()
+                        }
+                    }
+                })
         },
         backLayerContent = {
             BackdropMenu(
                 menus = MainMenus,
+                isExpandedScreen = isExpandedScreen,
                 onMenuSelected = {
-                    setMenuVisible(false)
+                    coroutine.launch {
+                        scaffoldState.conceal()
+                    }
                     currentMenu = it
                 }
             )
         },
         frontLayerContent = {
-            TabScreen(menuItem = MainMenus[currentMenu])
+            TabScreen(
+                menuItem = MainMenus[currentMenu],
+                isExpandedScreen = isExpandedScreen,
+                onViewImage = onViewImage
+            )
         }
     )
 }

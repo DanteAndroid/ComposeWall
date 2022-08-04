@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.danteandroi.composewall.MenuItem
 import com.danteandroi.composewall.MenuItem.Companion.MainMenus
+import com.danteandroi.composewall.net.ImageViewModel
 import com.danteandroi.composewall.utils.InjectionUtils
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -29,7 +30,9 @@ import java.util.Locale
 @Composable
 fun TabScreen(
     modifier: Modifier = Modifier,
-    menuItem: MenuItem
+    isExpandedScreen: Boolean = false,
+    menuItem: MenuItem,
+    onViewImage: (String, ImageViewModel) -> Unit = { _, _ -> }
 ) {
     val tabs = menuItem.tabs
     Column(modifier) {
@@ -69,13 +72,23 @@ fun TabScreen(
             val viewModel = remember(page, tabs) {
                 InjectionUtils.provideImageViewModel()
             }
-            LaunchedEffect(page, tabs) {
-                viewModel.fetchImages(tabs[page])
+            var requestPage by remember(page, tabs) {
+                mutableStateOf(1)
+            }
+            LaunchedEffect(page, tabs, requestPage) {
+                viewModel.fetchImages(tabs[page], requestPage)
             }
             val uiState by viewModel.uiState.collectAsState()
-            ImageScreen(
+            ImageListScreen(
                 modifier = Modifier.padding(top = 6.dp, start = 6.dp, end = 6.dp),
-                uiState = uiState
+                isExpandedScreen = isExpandedScreen,
+                uiState = uiState,
+                onViewImage = {
+                    onViewImage.invoke(it, viewModel)
+                },
+                onScrollToBottom = {
+                    requestPage++
+                }
             )
         }
     }

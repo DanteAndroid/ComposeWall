@@ -1,10 +1,8 @@
 package com.danteandroi.composewall.data
 
-import com.danteandroi.composewall.data.parser.WallParser
-import com.danteandroi.composewall.data.parser.YandeParser
-import com.danteandroi.composewall.net.API
-import com.danteandroi.composewall.net.WallHaven
-import com.danteandroi.composewall.net.Yande
+import coil.imageLoader
+import coil.request.ImageRequest
+import com.danteandroi.composewall.MainActivity
 
 /**
  * @author Du Wenyu
@@ -15,60 +13,25 @@ class ImageParser(
     val baseUrl: String,
     val category: String = "",
     val parser: IParser
-) {
-    companion object {
-        val WallParsers = listOf(
-            ImageParser(
-                WallHaven::class.java,
-                API.WALL_BASE,
-                category = API.CATE_WH_RANDOM,
-                WallParser
-            ),
-            ImageParser(
-                WallHaven::class.java,
-                API.WALL_BASE,
-                category = API.CATE_WH_ANIME,
-                WallParser
-            ),
-            ImageParser(
-                WallHaven::class.java,
-                API.WALL_BASE,
-                category = API.CATE_WH_FANTASY,
-                WallParser
-            ),
-            ImageParser(
-                WallHaven::class.java,
-                API.WALL_BASE,
-                category = API.CATE_WH_GIRL,
-                WallParser
-            ),
-            ImageParser(
-                WallHaven::class.java,
-                API.WALL_BASE,
-                category = API.CATE_WH_LANDSCAPE,
-                WallParser
-            ),
-            ImageParser(
-                WallHaven::class.java,
-                API.WALL_BASE,
-                category = API.CATE_WH_DARK,
-                WallParser
-            ),
-            ImageParser(
-                WallHaven::class.java,
-                API.WALL_BASE,
-                category = API.CATE_WH_SIMPLE,
-                WallParser
-            )
-        )
-
-        val YandeParsers = listOf(
-            ImageParser(Yande::class.java, API.YANDE_BASE, category = "yande", parser = YandeParser)
-        )
-    }
-}
-
+)
 
 interface IParser {
-    fun parseImages(type: String, data: String): List<Image>
+
+    suspend fun parseImages(type: String, data: String): List<Image>
+
+    suspend fun preloadImage(thumbUrl: String): IntArray {
+        val array = IntArray(2)
+        MainActivity.context?.let {
+            val request = ImageRequest.Builder(it)
+                .data(thumbUrl)
+                .build()
+            val result = it.imageLoader.execute(request)
+            result.drawable?.let { drawable ->
+                array[0] = drawable.intrinsicWidth
+                array[1] = drawable.intrinsicHeight
+            }
+        }
+        return array
+    }
+
 }

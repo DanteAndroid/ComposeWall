@@ -70,7 +70,7 @@ class NetService private constructor(val url: String = "") {
         sslContext.init(null, arrayOf(unsafeTrustManager), null)
         return OkHttpClient.Builder()
             .sslSocketFactory(sslContext.socketFactory, unsafeTrustManager)
-            .hostnameVerifier { p0, p1 -> true }
+            .hostnameVerifier { _, _ -> true }
             .addInterceptor(loggingInterceptor)
     }
 

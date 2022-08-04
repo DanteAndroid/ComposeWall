@@ -11,7 +11,7 @@ import java.io.IOException
  */
 object YandeParser : IParser {
 
-    override fun parseImages(type: String, data: String): List<Image> {
+    override suspend fun parseImages(type: String, data: String): List<Image> {
         val images = arrayListOf<Image>()
         val document = Jsoup.parse(data)
         val elements = document.select("ul[id=post-list-posts] li")
@@ -23,13 +23,16 @@ object YandeParser : IParser {
                 if (originalUrl.isNullOrBlank()) continue
                 val refer = a?.attr("href") ?: ""
                 val thumbUrl = a?.selectFirst("img")?.attr("src") ?: originalUrl
+                val size = preloadImage(thumbUrl)
                 images.add(
                     Image(
-                        id = originalUrl,
+                        id = originalUrl.substringAfterLast("/"),
                         thumbnail = thumbUrl,
                         url = originalUrl,
                         type = type,
-                        refer = refer
+                        refer = refer,
+                        width = size[0],
+                        height = size[1]
                     )
                 )
             } catch (e: IOException) {
