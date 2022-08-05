@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">ComposeWall</string>
-    <string name="hint">Select a different one?</string>
+    <string name="hint">Hint</string>
+    <string name="anime">Anime</string>
+    <string name="girl">Girl</string>
+    <string name="fantasy">Fantasy</string>
+    <string name="landscape">Landscape</string>
+    <string name="dark">Dark</string>
+    <string name="simple">Simple</string>
+    <string name="popular">Popular</string>
+    <string name="trending">Trending</string>
+    <string name="newest">New</string>
+    <string name="animal">Animal</string>
+    <string name="game">Game</string>
+    <string name="four_k">4K</string>
+    <string name="yande">Yande</string>
+    <string name="random">Random</string>
+    <string name="tap_to_retry">Tap to retry</string>
 </resources>

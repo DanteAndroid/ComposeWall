@@ -2,6 +2,7 @@ package com.danteandroi.composewall.data.parser
 
 import com.danteandroi.composewall.data.IParser
 import com.danteandroi.composewall.data.Image
+import com.danteandroi.composewall.utils.removeBraces
 import org.json.JSONArray
 import org.jsoup.Jsoup
 import java.io.IOException
@@ -44,12 +45,11 @@ object ManiaParser : IParser {
     }
 
     private fun getOriginalUrl(url: String, movieName: String): String {
-        // https://wallpapers.moviemania.io/phone/movie/297762/431052/wonder-woman-phone-wallpaper.jpg?w=1536&h=2732
         val suffix = "." + url.substringAfterLast(".")
-        return url.replaceFirst("thumbnails", "wallpapers").substringBeforeLast("/") +
+        return (url.replaceFirst("thumbnails", "wallpapers").substringBeforeLast("/") +
                 "/" + movieName.lowercase().replace(":", "").replace(" ", "-") +
-                "-phone-wallpaper$suffix" + "?w=1536&h=2732"
-            .removePrefix("//")
+                "-phone-wallpaper$suffix" + "?w=1536&h=2732").removePrefix("//").removeBraces()
+
     }
 
 }

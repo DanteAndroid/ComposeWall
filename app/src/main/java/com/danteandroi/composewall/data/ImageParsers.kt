@@ -4,17 +4,6 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import com.danteandroi.composewall.MainActivity
 
-/**
- * @author Du Wenyu
- * 2022/7/29
- */
-class ImageParser(
-    val apiClazz: Class<*>,
-    val baseUrl: String,
-    val category: String = "",
-    val parser: IParser
-)
-
 interface IParser {
 
     suspend fun parseImages(type: String, data: String): List<Image>

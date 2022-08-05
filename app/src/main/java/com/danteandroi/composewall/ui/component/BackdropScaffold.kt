@@ -32,6 +32,7 @@ fun BackdropScaffold(
     BackdropScaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
+        gesturesEnabled = false,
         backLayerBackgroundColor = MaterialTheme.colorScheme.primary,
         appBar = {
             BackdropTitle(

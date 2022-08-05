@@ -101,6 +101,6 @@ fun DetailScreen(
                 )
             }
         }
-        if (loading) CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
+        if (loading) CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
     }
 }

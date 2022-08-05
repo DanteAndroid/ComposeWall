@@ -1,5 +1,6 @@
 package com.danteandroi.composewall.ui.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -9,20 +10,27 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BrokenImage
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.danteandroi.composewall.R
 import com.danteandroi.composewall.data.Image
-import com.danteandroi.composewall.data.ImageUiState
 import com.danteandroi.composewall.data.LayoutType
+import com.danteandroi.composewall.data.UiState
 import com.danteandroi.composewall.widget.StaggeredVerticalGrid
 import timber.log.Timber
+
 
 /**
  * @author Du Wenyu
@@ -32,46 +40,62 @@ import timber.log.Timber
 fun ImageListScreen(
     modifier: Modifier = Modifier,
     isExpandedScreen: Boolean = false,
-    uiState: ImageUiState,
+    uiState: UiState,
     onViewImage: (String) -> Unit,
     onScrollToBottom: () -> Unit
 ) {
-    if (uiState.images.isEmpty()) {
-        CircularProgressIndicator()
-    } else {
-        when (uiState.type) {
-            LayoutType.Fixed -> {
-                LazyVerticalGrid(
-                    modifier = modifier,
-                    columns = GridCells.Fixed(
-                        if (isExpandedScreen)
-                            uiState.spanCount * 2 else uiState.spanCount
-                    )
-                ) {
-                    items(uiState.images.size) {
-                        val image = uiState.images[it]
-                        ImageItem(
-                            modifier = Modifier.height(uiState.height.dp),
-                            onViewImage = onViewImage,
-                            image = image
+    when (uiState) {
+        is UiState.SuccessUiState -> {
+            when (uiState.config.type) {
+                LayoutType.Fixed -> {
+                    LazyVerticalGrid(
+                        modifier = modifier,
+                        columns = GridCells.Fixed(
+                            if (isExpandedScreen)
+                                uiState.config.spanCount * 2 else uiState.config.spanCount
                         )
+                    ) {
+                        items(uiState.images.size) {
+                            val image = uiState.images[it]
+                            ImageItem(
+                                modifier = Modifier.aspectRatio(uiState.config.aspectRatio),
+                                onViewImage = onViewImage,
+                                image = image
+                            )
+                        }
+                        item {
+                            LoadMore(onScrollToBottom)
+                        }
                     }
-                    item {
+                }
+
+                LayoutType.Staggered -> {
+                    StaggeredVerticalGrid(
+                        modifier = modifier.verticalScroll(rememberScrollState()),
+                        if (isExpandedScreen) 300.dp else 150.dp
+                    ) {
+                        uiState.images.forEach { image ->
+                            ImageItem(onViewImage = onViewImage, image = image)
+                        }
                         LoadMore(onScrollToBottom)
                     }
                 }
             }
+        }
+        is UiState.LoadingUiState -> {
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+        }
+        is UiState.ErrorUiState -> {
+            Column(Modifier.clickable {
 
-            LayoutType.Staggered -> {
-                StaggeredVerticalGrid(
-                    modifier = modifier.verticalScroll(rememberScrollState()),
-                    if (isExpandedScreen) 300.dp else 150.dp
-                ) {
-                    uiState.images.forEach { image ->
-                        ImageItem(onViewImage = onViewImage, image = image)
-                    }
-                    LoadMore(onScrollToBottom)
-                }
+            }) {
+                Image(
+                    modifier = Modifier.size(16.dp),
+                    imageVector = Icons.Default.BrokenImage,
+                    contentDescription = "Broken image"
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(text = stringResource(id = R.string.tap_to_retry))
             }
         }
     }
@@ -79,11 +103,19 @@ fun ImageListScreen(
 
 @Composable
 private fun LoadMore(onScrollToBottom: () -> Unit) {
-    Column(
+    Row(
         Modifier
             .fillMaxWidth()
-            .height(54.dp), Arrangement.Center
+            .height(54.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(18.dp),
+            color = MaterialTheme.colorScheme.primary,
+            strokeWidth = 2.dp
+        )
+        Spacer(modifier = Modifier.size(8.dp))
         Text(text = "Loading...")
         LaunchedEffect(Unit) {
             Timber.d("Scrolled to bottom")

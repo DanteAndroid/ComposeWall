@@ -17,3 +17,7 @@ fun String.alternativeImageUrl(): String {
     }
     return this
 }
+
+fun String.removeBraces(): String {
+    return this.replace("(", "").replace(")", "")
+}

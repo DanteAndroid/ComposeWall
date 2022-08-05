@@ -1,10 +1,7 @@
 package com.danteandroi.composewall
 
-import com.danteandroi.composewall.data.ImageParser
-import com.danteandroi.composewall.data.parser.BcoderssParser
-import com.danteandroi.composewall.data.parser.ManiaParser
-import com.danteandroi.composewall.data.parser.WallParser
-import com.danteandroi.composewall.data.parser.YandeParser
+import com.danteandroi.composewall.data.LayoutType
+import com.danteandroi.composewall.data.UiConfig
 import com.danteandroi.composewall.net.*
 
 /**
@@ -12,31 +9,43 @@ import com.danteandroi.composewall.net.*
  * 2022/7/29
  */
 
-data class MenuItem(val tabs: List<ImageParser>) {
-    val name: String = tabs.first().apiClazz.simpleName
+
+data class MenuItem(
+    val apiClazz: Class<*>,
+    val baseUrl: String,
+    val category: List<Pair<String, Int>>,
+    val uiConfig: UiConfig
+) {
+    val name: String = apiClazz.simpleName
 
     companion object {
-        private val wallParsers = API.wallHavenCategories.map { category ->
-            ImageParser(WallHaven::class.java, API.WALL_BASE, category, WallParser)
-        }
-        private val yandeParsers = listOf(
-            ImageParser(Yande::class.java, API.YANDE_BASE, category = "yande", parser = YandeParser)
-        )
-        private val maniaParsers = API.maniaCategories.map { category ->
-            ImageParser(Mania::class.java, API.MANIA_BASE, category, ManiaParser)
-        }
-        private val bcoderssCategories = API.bcoderssCategories.map { category ->
-            ImageParser(Bcoderss::class.java, API.BCODERSS_BASE, category, BcoderssParser)
-        }
-
         val MainMenus = listOf(
-            MenuItem(bcoderssCategories),
-            MenuItem(maniaParsers),
-            MenuItem(wallParsers),
-            MenuItem(yandeParsers),
+            MenuItem(
+                Bcoderss::class.java,
+                API.BCODERSS_BASE,
+                API.bcoderssCategories,
+                UiConfig(3, 0.49f, LayoutType.Fixed)
+            ),
+            MenuItem(
+                Mania::class.java,
+                API.MANIA_BASE,
+                API.maniaCategories,
+                UiConfig(2, 0.56f, LayoutType.Fixed)
+            ),
+            MenuItem(
+                WallHaven::class.java,
+                API.WALL_BASE,
+                API.wallHavenCategories,
+                UiConfig(2, 1.5f, LayoutType.Fixed)
+            ),
+            MenuItem(
+                Yande::class.java,
+                API.YANDE_BASE,
+                listOf("yande" to R.string.yande),
+                UiConfig(3, type = LayoutType.Staggered)
+            ),
         )
     }
-
 }
 
 

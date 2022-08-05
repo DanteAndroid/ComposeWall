@@ -1,15 +1,14 @@
 package com.danteandroi.composewall.ui.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.*
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.danteandroi.composewall.MenuItem
@@ -20,7 +19,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 /**
  * @author Du Wenyu
@@ -29,16 +27,16 @@ import java.util.Locale
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabScreen(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.background(MaterialTheme.colorScheme.background),
     isExpandedScreen: Boolean = false,
     menuItem: MenuItem,
     onViewImage: (String, ImageViewModel) -> Unit = { _, _ -> }
 ) {
-    val tabs = menuItem.tabs
     Column(modifier) {
         val coroutineScope = rememberCoroutineScope()
         val pagerState = rememberPagerState()
         ScrollableTabRow(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
             selectedTabIndex = pagerState.currentPage,
             indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
@@ -46,14 +44,13 @@ fun TabScreen(
                 )
             }
         ) {
-            tabs.forEachIndexed { index, imageParser ->
+            menuItem.category.forEachIndexed { index, category ->
                 Tab(
                     text = {
-                        Text(imageParser.category.replaceFirstChar {
-                            if (it.isLowerCase()) it.titlecase(
-                                Locale.getDefault()
-                            ) else it.toString()
-                        })
+                        Text(
+                            LocalContext.current.resources.getText(category.second)
+                                .toString(),
+                        )
                     },
                     selected = pagerState.currentPage == index,
                     onClick = {
@@ -65,18 +62,18 @@ fun TabScreen(
             }
         }
         HorizontalPager(
-            count = tabs.size,
+            count = menuItem.category.size,
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) { page ->
-            val viewModel = remember(page, tabs) {
+            val viewModel = remember(page, menuItem) {
                 InjectionUtils.provideImageViewModel()
             }
-            var requestPage by remember(page, tabs) {
+            var requestPage by remember(page, menuItem) {
                 mutableStateOf(1)
             }
-            LaunchedEffect(page, tabs, requestPage) {
-                viewModel.fetchImages(tabs[page], requestPage)
+            LaunchedEffect(page, menuItem, requestPage) {
+                viewModel.fetchImages(menuItem, page, requestPage)
             }
             val uiState by viewModel.uiState.collectAsState()
             ImageListScreen(

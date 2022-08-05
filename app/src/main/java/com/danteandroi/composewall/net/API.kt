@@ -1,5 +1,7 @@
 package com.danteandroi.composewall.net
 
+import com.danteandroi.composewall.R
+
 /**
  * Net request APIs and CATEs
  */
@@ -14,10 +16,31 @@ object API {
     const val BCODERSS_BASE = "https://m.bcoderss.com/"
 
     val wallHavenCategories =
-        arrayOf("random", "anime", "girl", "fantasy", "landscape", "dark", "simple")
+        listOf(
+            "random" to R.string.random,
+            "anime" to R.string.anime,
+            "girl" to R.string.girl,
+            "fantasy" to R.string.fantasy,
+            "landscape" to R.string.landscape,
+            "dark" to R.string.dark,
+            "simple" to R.string.simple
+        )
     val maniaCategories =
-        arrayOf("popular", "trending", "new")
+        listOf(
+            "new" to R.string.newest,
+            "popular" to R.string.popular,
+            "trending" to R.string.trending
+        )
     val bcoderssCategories =
-        arrayOf("动物", "风景", "美女", "动漫", "抽象", "游戏", "4K", "黑色")
+        listOf(
+            "动物" to R.string.animal,
+            "风景" to R.string.landscape,
+            "美女" to R.string.girl,
+            "动漫" to R.string.anime,
+            "抽象" to R.string.fantasy,
+            "游戏" to R.string.game,
+            "4K" to R.string.four_k,
+            "黑色" to R.string.dark
+        )
 
 }

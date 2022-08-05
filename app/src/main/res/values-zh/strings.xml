@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">编织壁纸</string>
+    <string name="hint">提示</string>
+    <string name="anime">动漫</string>
+    <string name="girl">美女</string>
+    <string name="fantasy">幻想</string>
+    <string name="landscape">风景</string>
+    <string name="dark">黑色</string>
+    <string name="simple">简约</string>
+    <string name="popular">热门</string>
+    <string name="trending">上升</string>
+    <string name="newest">最新</string>
+    <string name="animal">动物</string>
+    <string name="game">游戏</string>
+    <string name="four_k">4K</string>
+    <string name="yande">Yande</string>
+    <string name="random">随机</string>
+    <string name="tap_to_retry">轻触重试</string>
+
+</resources>
