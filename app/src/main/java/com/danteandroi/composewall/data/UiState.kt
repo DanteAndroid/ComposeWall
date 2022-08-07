@@ -11,19 +11,16 @@ import androidx.compose.runtime.Stable
 @Immutable
 data class ImageDetailState(val isDetail: Boolean, val url: String)
 
-sealed class UiState {
+sealed class UiState
 
-    @Stable
-    data class SuccessUiState(
-        val config: UiConfig = UiConfig(),
-        val images: List<Image> = arrayListOf()
-    ) : UiState()
+@Stable
+data class UiStateSuccess(
+    val config: UiConfig = UiConfig(),
+    val images: List<Image> = arrayListOf()
+) : UiState()
 
-    object LoadingUiState : UiState()
-    object ErrorUiState : UiState()
-
-}
-
+object LoadingUiState : UiState()
+object ErrorUiState : UiState()
 
 @Stable
 data class UiConfig(

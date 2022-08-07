@@ -53,11 +53,16 @@ class ComposeAppState(
     init {
         coroutineScope.launch {
             snackBarManager.messages.collect { messages ->
-                if (messages.isNotEmpty()) {
-                    val text = resources.getText(messages[0].message)
-                    scaffoldState.snackbarHostState.showSnackbar(message = text.toString())
-                    snackBarManager.setMessageShown(messages[0].id)
+                try {
+                    if (messages.isNotEmpty()) {
+                        val text = resources.getText(messages[0].message)
+                        scaffoldState.snackbarHostState.showSnackbar(message = text.toString())
+                        snackBarManager.setMessageShown(messages[0].id)
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
+
             }
         }
     }

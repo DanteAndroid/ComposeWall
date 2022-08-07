@@ -2,12 +2,17 @@ package com.danteandroi.composewall.net
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.danteandroi.composewall.MainActivity
 import com.danteandroi.composewall.MenuItem
 import com.danteandroi.composewall.data.Image
+import com.danteandroi.composewall.data.LoadingUiState
 import com.danteandroi.composewall.data.UiState
+import com.danteandroi.composewall.data.UiStateSuccess
+import com.danteandroi.composewall.utils.preloadImage
 import com.danteandroi.composewall.utils.safeLaunch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import timber.log.Timber
 
 /**
  * @author Du Wenyu
@@ -15,7 +20,7 @@ import kotlinx.coroutines.flow.update
  */
 class ImageViewModel(private val imageRepository: ImageRepository = ImageRepository) : ViewModel() {
 
-    val uiState = MutableStateFlow<UiState>(UiState.LoadingUiState)
+    val uiState = MutableStateFlow<UiState>(LoadingUiState)
 
     fun fetchImages(menuItem: MenuItem, index: Int, page: Int = 1) {
         viewModelScope.safeLaunch {
@@ -26,13 +31,13 @@ class ImageViewModel(private val imageRepository: ImageRepository = ImageReposit
                 page = page
             )
             uiState.update {
-                if (it is UiState.SuccessUiState) {
+                if (it is UiStateSuccess) {
                     it.copy(
                         config = menuItem.uiConfig,
                         images = it.images + result
                     )
                 } else {
-                    UiState.SuccessUiState(
+                    UiStateSuccess(
                         config = menuItem.uiConfig,
                         images = result
                     )
@@ -41,8 +46,23 @@ class ImageViewModel(private val imageRepository: ImageRepository = ImageReposit
         }
     }
 
+    fun preloadImages(menuItem: MenuItem, index: Int, page: Int = 1) {
+        viewModelScope.safeLaunch {
+            val result = imageRepository.fetchImages(
+                apiClazz = menuItem.apiClazz,
+                baseUrl = menuItem.baseUrl,
+                category = menuItem.category[index].first,
+                page = page
+            )
+            result.forEach {
+                val drawables = MainActivity.context.preloadImage(it.url)
+                Timber.d("preload image $drawables")
+            }
+        }
+    }
+
     fun findImage(id: String): Image? {
-        return (uiState.value as? UiState.SuccessUiState)?.images?.find { it.id == id }
+        return (uiState.value as? UiStateSuccess)?.images?.find { it.id == id }
     }
 
 }

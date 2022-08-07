@@ -27,12 +27,12 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabScreen(
-    modifier: Modifier = Modifier.background(MaterialTheme.colorScheme.background),
+    modifier: Modifier = Modifier,
     isExpandedScreen: Boolean = false,
     menuItem: MenuItem,
     onViewImage: (String, ImageViewModel) -> Unit = { _, _ -> }
 ) {
-    Column(modifier) {
+    Column(modifier.background(MaterialTheme.colorScheme.background)) {
         val coroutineScope = rememberCoroutineScope()
         val pagerState = rememberPagerState()
         ScrollableTabRow(
@@ -55,16 +55,20 @@ fun TabScreen(
                     selected = pagerState.currentPage == index,
                     onClick = {
                         coroutineScope.launch {
-                            pagerState.scrollToPage(index)
+                            if (pagerState.currentPage == index) {
+                                // Scroll to top
+                            } else {
+                                pagerState.scrollToPage(index)
+                            }
                         }
                     }
                 )
             }
         }
         HorizontalPager(
+            modifier = Modifier.fillMaxSize(),
             count = menuItem.category.size,
-            state = pagerState,
-            modifier = Modifier.fillMaxSize()
+            state = pagerState
         ) { page ->
             val viewModel = remember(page, menuItem) {
                 InjectionUtils.provideImageViewModel()
@@ -74,6 +78,9 @@ fun TabScreen(
             }
             LaunchedEffect(page, menuItem, requestPage) {
                 viewModel.fetchImages(menuItem, page, requestPage)
+//                if (menuItem.apiClazz == Yande::class.java) {
+//                    viewModel.preloadImages(menuItem, page, requestPage)
+//                }
             }
             val uiState by viewModel.uiState.collectAsState()
             ImageListScreen(
@@ -83,11 +90,15 @@ fun TabScreen(
                 onViewImage = {
                     onViewImage.invoke(it, viewModel)
                 },
+                onRetry = {
+                    viewModel.fetchImages(menuItem, page, requestPage)
+                },
                 onScrollToBottom = {
                     requestPage++
                 }
             )
         }
+
     }
 }
 

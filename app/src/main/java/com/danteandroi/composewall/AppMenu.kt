@@ -42,7 +42,7 @@ data class MenuItem(
                 Yande::class.java,
                 API.YANDE_BASE,
                 listOf("yande" to R.string.yande),
-                UiConfig(3, type = LayoutType.Staggered)
+                UiConfig(3, 0.66f, LayoutType.Fixed)
             ),
         )
     }

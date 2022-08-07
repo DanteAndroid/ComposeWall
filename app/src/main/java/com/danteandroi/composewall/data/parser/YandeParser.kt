@@ -23,7 +23,7 @@ object YandeParser : IParser {
                 if (originalUrl.isNullOrBlank()) continue
                 val refer = a?.attr("href") ?: ""
                 val thumbUrl = a?.selectFirst("img")?.attr("src") ?: originalUrl
-                val size = preloadImage(thumbUrl)
+//                val size = preloadImage(thumbUrl)
                 images.add(
                     Image(
                         id = originalUrl.substringAfterLast("/"),
@@ -31,8 +31,6 @@ object YandeParser : IParser {
                         url = originalUrl,
                         type = type,
                         refer = refer,
-                        width = size[0],
-                        height = size[1]
                     )
                 )
             } catch (e: IOException) {

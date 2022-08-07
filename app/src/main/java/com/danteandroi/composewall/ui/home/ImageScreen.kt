@@ -5,13 +5,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BrokenImage
+import androidx.compose.material.icons.filled.SignalWifiBad
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,9 +26,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.danteandroi.composewall.R
-import com.danteandroi.composewall.data.Image
-import com.danteandroi.composewall.data.LayoutType
-import com.danteandroi.composewall.data.UiState
+import com.danteandroi.composewall.data.*
 import com.danteandroi.composewall.widget.StaggeredVerticalGrid
 import timber.log.Timber
 
@@ -42,14 +41,16 @@ fun ImageListScreen(
     isExpandedScreen: Boolean = false,
     uiState: UiState,
     onViewImage: (String) -> Unit,
+    onRetry: () -> Unit,
     onScrollToBottom: () -> Unit
 ) {
     when (uiState) {
-        is UiState.SuccessUiState -> {
+        is UiStateSuccess -> {
             when (uiState.config.type) {
                 LayoutType.Fixed -> {
                     LazyVerticalGrid(
                         modifier = modifier,
+                        state = rememberLazyGridState(),
                         columns = GridCells.Fixed(
                             if (isExpandedScreen)
                                 uiState.config.spanCount * 2 else uiState.config.spanCount
@@ -82,20 +83,28 @@ fun ImageListScreen(
                 }
             }
         }
-        is UiState.LoadingUiState -> {
+        is LoadingUiState -> {
             CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
-        is UiState.ErrorUiState -> {
-            Column(Modifier.clickable {
-
-            }) {
+        is ErrorUiState -> {
+            Column(
+                Modifier
+                    .clickable {
+                        onRetry.invoke()
+                    },
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
                 Image(
-                    modifier = Modifier.size(16.dp),
-                    imageVector = Icons.Default.BrokenImage,
+                    modifier = Modifier.size(86.dp),
+                    imageVector = Icons.Default.SignalWifiBad,
                     contentDescription = "Broken image"
                 )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(text = stringResource(id = R.string.tap_to_retry))
+                Spacer(modifier = Modifier.width(36.dp))
+                Text(
+                    text = stringResource(id = R.string.tap_to_retry),
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                )
             }
         }
     }
