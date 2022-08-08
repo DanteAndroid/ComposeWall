@@ -3,9 +3,11 @@
 Compose wall is a wallpaper app built fully
 with [Jetpack Compose](https://developer.android.com/jetpack/compose).
 
-### Screenshots
+### Download & screenshots
 
-<img src="Screenshots/0.png" width="200"><img src="Screenshots/1.png" width="200"><img src="Screenshots/2.png" width="200">
+[Download](releases/)
+
+<img src="Screenshots/0.png" width="200"> <img src="Screenshots/1.png" width="200"> <img src="Screenshots/2.png" width="200">
 
 ### Who could learn this repo?
 
