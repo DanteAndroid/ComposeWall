@@ -5,7 +5,7 @@ with [Jetpack Compose](https://developer.android.com/jetpack/compose).
 
 ### Screenshots
 
-![](Screenshots/0.png) ![](Screenshots/1.png) ![](Screenshots/2.png)
+<img src="Screenshots/0.png" width="100"><img src="Screenshots/1.png" width="100"><img src="Screenshots/2.png" width="100">
 
 ### Who could learn this repo?
 
