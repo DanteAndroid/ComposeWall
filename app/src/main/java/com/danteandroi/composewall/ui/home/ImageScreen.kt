@@ -139,7 +139,6 @@ private fun ImageItem(
     onViewImage: (String) -> Unit,
     image: Image
 ) {
-//    Timber.d("ImageItem ${image.width} ${image.height}")
     AsyncImage(
         modifier = modifier
             .clickable {
