@@ -5,7 +5,7 @@ with [Jetpack Compose](https://developer.android.com/jetpack/compose).
 
 ### Screenshots
 
-<img src="Screenshots/0.png" width="100"><img src="Screenshots/1.png" width="100"><img src="Screenshots/2.png" width="100">
+<img src="Screenshots/0.png" width="200"><img src="Screenshots/1.png" width="200"><img src="Screenshots/2.png" width="200">
 
 ### Who could learn this repo?
 
@@ -19,11 +19,11 @@ will help to the best of my ability.
 
 ### Structure of this repo?
 
-- `data` is for model class and parsers are used to parse image source url from web pages.
+- `data` is for model class and parsers used to parse image source url from web pages.
 - `net` is for net request apis and services.
 - `component` is the encapsulation of Compose ui components.
 - `theme` is for colors, font styles, and themes.
 - `AppMenu` defines all menus of app.
-- `ComposeNavGraph` is like Jetpack navigation, it defines destinations of app.
-- `ComposeDestinations` is actually holding navigating methods for different status.
+- `ComposeNavGraph` defines destinations of app (like Jetpack navigation).
+- `ComposeDestinations` is holding navigating methods for different status.
 
