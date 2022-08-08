@@ -1,5 +1,6 @@
 # ComposeWall
 
+[中文版](README_CN.md)
 Compose wall is a wallpaper app built fully
 with [Jetpack Compose](https://developer.android.com/jetpack/compose).
 
@@ -11,7 +12,7 @@ with [Jetpack Compose](https://developer.android.com/jetpack/compose).
 
 ### Who could learn this repo?
 
-Both Android beginners and experienced developers could learn learn this repo.
+Both Android beginners and experienced developers could learn this repo.
 
 ### Why choose this repo?
 
