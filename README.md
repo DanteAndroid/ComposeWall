@@ -3,6 +3,10 @@
 Compose wall is a wallpaper app built fully
 with [Jetpack Compose](https://developer.android.com/jetpack/compose).
 
+### Screenshots
+
+![](Screenshots/0.png) ![](Screenshots/1.png) ![](Screenshots/2.png)
+
 ### Who could learn this repo?
 
 Both Android beginners and experienced developers could learn learn this repo.
@@ -14,8 +18,6 @@ are more difficult to learn than this repo. If you have any questions, please cr
 will help to the best of my ability.
 
 ### Structure of this repo?
-
-![image-20220808115715383](/Users/mac/Library/Application Support/typora-user-images/image-20220808115715383.png)
 
 - `data` is for model class and parsers are used to parse image source url from web pages.
 - `net` is for net request apis and services.
