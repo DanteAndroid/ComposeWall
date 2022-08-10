@@ -9,10 +9,14 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
  * @author Du Wenyu
  * 2022/8/3
  */
-fun LazyListState.isScrolledToBottom() =
-    layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
+fun LazyListState.isScrolledToBottom(preloadCount: Int = 1) =
+    layoutInfo.visibleItemsInfo.lastOrNull()?.let {
+        it.index > layoutInfo.totalItemsCount - preloadCount
+    } ?: false
 
-fun LazyGridState.isScrolledToBottom() =
-    layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
+fun LazyGridState.isScrolledToBottom(preloadCount: Int = 1) =
+    layoutInfo.visibleItemsInfo.lastOrNull()?.let {
+        it.index > layoutInfo.totalItemsCount - preloadCount
+    } ?: false
 
 fun WindowSizeClass?.isExpandedScreen() = this?.widthSizeClass == WindowWidthSizeClass.Expanded

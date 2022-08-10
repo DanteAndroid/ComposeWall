@@ -20,12 +20,15 @@ package com.danteandroi.composewall.utils
  * Constants used throughout the app.
  */
 const val DATABASE_NAME = "threedimens-db"
-const val PC_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
+const val PC_USER_AGENT =
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
 
 const val VIEW_POSITION = "position"
 const val VIEW_PAGE = "page"
 const val ARG_API_TYPE = "api_type"
 const val ARG_TITLE = "title"
+
+const val PRELOAD_COUNT = 5
 
 // 每次加载数量
 const val PAGE_SIZE_FROM_NET = 20

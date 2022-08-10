@@ -1,7 +1,7 @@
 # ComposeWall
 
 [English version](README.md)
-ComposeWall 是一款由 [Jetpack Compose](https://developer.android.com/jetpack/compose) 打造的应用.
+ComposeWall 是一款由 [Jetpack Compose](https://developer.android.com/jetpack/compose) 打造的应用。
 
 ### 下载与截图
 
@@ -11,12 +11,12 @@ ComposeWall 是一款由 [Jetpack Compose](https://developer.android.com/jetpack
 
 ### 谁适合学习此项目？
 
-Android 初学者和资深开发都可以学习此项目
+Android 初学者和资深开发都可以学习此项目。
 
 ### 为什么要选择这个项目？
 
-你还可以看看 [Compose samples](https://github.com/android/compose-samples),
-但我觉得会比较难一些。如有任何疑问，请提issue，我会尽我所能地回答
+你还可以看看 [Compose samples](https://github.com/android/compose-samples)，
+但我觉得会比较难一些。如有任何疑问，请提issue，我会尽可能地解答~
 
 ### 项目的架构？
 

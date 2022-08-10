@@ -1,8 +1,8 @@
 package com.danteandroi.composewall.net
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.danteandroi.composewall.MainActivity
 import com.danteandroi.composewall.MenuItem
 import com.danteandroi.composewall.data.Image
 import com.danteandroi.composewall.data.LoadingUiState
@@ -46,7 +46,7 @@ class ImageViewModel(private val imageRepository: ImageRepository = ImageReposit
         }
     }
 
-    fun preloadImages(menuItem: MenuItem, index: Int, page: Int = 1) {
+    fun preloadImages(context: Context, menuItem: MenuItem, index: Int, page: Int = 1) {
         viewModelScope.safeLaunch {
             val result = imageRepository.fetchImages(
                 apiClazz = menuItem.apiClazz,
@@ -55,7 +55,7 @@ class ImageViewModel(private val imageRepository: ImageRepository = ImageReposit
                 page = page
             )
             result.forEach {
-                val drawables = MainActivity.context.preloadImage(it.url)
+                val drawables = context.preloadImage(it.url)
                 Timber.d("preload image $drawables")
             }
         }

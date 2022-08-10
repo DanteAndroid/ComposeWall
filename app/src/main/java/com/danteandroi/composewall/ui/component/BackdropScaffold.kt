@@ -1,9 +1,6 @@
 package com.danteandroi.composewall.ui.component
 
-import androidx.compose.material.BackdropScaffold
-import androidx.compose.material.BackdropValue
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberBackdropScaffoldState
+import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -21,10 +18,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun BackdropScaffold(
     modifier: Modifier = Modifier,
+    scaffoldState: BackdropScaffoldState,
     isExpandedScreen: Boolean = false,
     onViewImage: (String, ImageViewModel) -> Unit = { _, _ -> }
 ) {
-    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     var currentMenu by remember {
         mutableStateOf(0)
     }
@@ -32,7 +29,7 @@ fun BackdropScaffold(
     BackdropScaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
-        gesturesEnabled = false,
+        gesturesEnabled = true,
         backLayerBackgroundColor = MaterialTheme.colorScheme.primary,
         appBar = {
             BackdropTitle(
@@ -69,8 +66,9 @@ fun BackdropScaffold(
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
 fun ComposeBackdropScaffoldPreview() {
-    BackdropScaffold()
+    BackdropScaffold(scaffoldState = rememberBackdropScaffoldState(initialValue = BackdropValue.Concealed))
 }

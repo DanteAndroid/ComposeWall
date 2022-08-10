@@ -14,8 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SignalWifiBad
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,9 +26,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.danteandroi.composewall.R
 import com.danteandroi.composewall.data.*
+import com.danteandroi.composewall.utils.EventManager
+import com.danteandroi.composewall.utils.PRELOAD_COUNT
+import com.danteandroi.composewall.utils.isScrolledToBottom
 import com.danteandroi.composewall.widget.StaggeredVerticalGrid
 import timber.log.Timber
-
 
 /**
  * @author Du Wenyu
@@ -40,43 +41,57 @@ fun ImageListScreen(
     modifier: Modifier = Modifier,
     isExpandedScreen: Boolean = false,
     uiState: UiState,
-    onViewImage: (String) -> Unit,
-    onRetry: () -> Unit,
+    onClickImage: (String) -> Unit,
+    onClickRetry: () -> Unit,
     onScrollToBottom: () -> Unit
 ) {
     when (uiState) {
         is UiStateSuccess -> {
             when (uiState.config.type) {
                 LayoutType.Fixed -> {
+                    val scrollState = rememberLazyGridState()
+                    val scrollToBottom by remember {
+                        derivedStateOf {
+                            scrollState.isScrolledToBottom(PRELOAD_COUNT)
+                        }
+                    }
+                    LaunchedEffect(scrollToBottom) {
+                        if (scrollToBottom) onScrollToBottom.invoke()
+                    }
+                    EventManager.Handler(handleEvent = {
+                        if (it.name == UiEvent.ScrollToTop.name) {
+                            scrollState.scrollToItem(0)
+                        }
+                    })
                     LazyVerticalGrid(
                         modifier = modifier,
-                        state = rememberLazyGridState(),
+                        state = scrollState,
                         columns = GridCells.Fixed(
                             if (isExpandedScreen)
                                 uiState.config.spanCount * 2 else uiState.config.spanCount
                         )
                     ) {
-                        items(uiState.images.size) {
+                        items(uiState.images.size, key = {
+                            uiState.images[it].uniqueId
+                        }) {
                             val image = uiState.images[it]
                             ImageItem(
                                 modifier = Modifier.aspectRatio(uiState.config.aspectRatio),
-                                onViewImage = onViewImage,
+                                onViewImage = onClickImage,
                                 image = image
                             )
-                        }
-                        item {
-                            LoadMore(onScrollToBottom)
                         }
                     }
                 }
 
                 LayoutType.Staggered -> {
+                    val scrollState = rememberScrollState()
                     StaggeredVerticalGrid(
-                        modifier = modifier.verticalScroll(rememberScrollState()),
+                        modifier = modifier.verticalScroll(scrollState),
                         if (isExpandedScreen) 300.dp else 150.dp
                     ) {
                         uiState.images.forEach { image ->
-                            ImageItem(onViewImage = onViewImage, image = image)
+                            ImageItem(onViewImage = onClickImage, image = image)
                         }
                         LoadMore(onScrollToBottom)
                     }
@@ -90,7 +105,7 @@ fun ImageListScreen(
             Column(
                 Modifier
                     .clickable {
-                        onRetry.invoke()
+                        onClickRetry.invoke()
                     },
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center

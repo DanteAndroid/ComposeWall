@@ -1,8 +1,7 @@
 package com.danteandroi.composewall
 
 import android.content.res.Resources
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -32,7 +31,9 @@ object ComposeDestinations {
 
 @Composable
 fun rememberComposeAppState(
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    scaffoldState: SnackbarHostState = remember {
+        SnackbarHostState()
+    },
     snackBarManager: SnackBarManager = SnackBarManager,
     navController: NavHostController = rememberNavController(),
     resources: Resources = LocalContext.current.resources,
@@ -42,8 +43,8 @@ fun rememberComposeAppState(
 }
 
 @Stable
-class ComposeAppState(
-    private val scaffoldState: ScaffoldState,
+class ComposeAppState constructor(
+    val scaffoldState: SnackbarHostState,
     private val snackBarManager: SnackBarManager,
     private val resources: Resources,
     val navController: NavHostController,
@@ -53,16 +54,11 @@ class ComposeAppState(
     init {
         coroutineScope.launch {
             snackBarManager.messages.collect { messages ->
-                try {
-                    if (messages.isNotEmpty()) {
-                        val text = resources.getText(messages[0].message)
-                        scaffoldState.snackbarHostState.showSnackbar(message = text.toString())
-                        snackBarManager.setMessageShown(messages[0].id)
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                if (messages.isNotEmpty()) {
+                    val text = resources.getText(messages[0].message)
+                    scaffoldState.showSnackbar(message = text.toString())
+                    snackBarManager.setMessageShown(messages[0].id)
                 }
-
             }
         }
     }

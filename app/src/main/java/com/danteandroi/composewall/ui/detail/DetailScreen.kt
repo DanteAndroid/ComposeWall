@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.graphics.drawable.toBitmap
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
@@ -26,7 +27,6 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import com.blankj.utilcode.util.ImageUtils
 import com.blankj.utilcode.util.IntentUtils
-import com.danteandroi.composewall.MainActivity
 import com.danteandroi.composewall.R
 import com.danteandroi.composewall.data.Image
 import com.danteandroi.composewall.data.ImageDetailState
@@ -65,6 +65,8 @@ fun DetailScreen(
     }
     val scope = rememberCoroutineScope()
     if (showOptions) {
+        val context = LocalContext.current
+        val appName = stringResource(id = R.string.app_name)
         OptionsDialog(
             onDismissRequest = {
                 showOptions = false
@@ -76,27 +78,27 @@ fun DetailScreen(
             onItemClick = { index ->
                 when (index) {
                     0 -> scope.launch {
-                        MainActivity.context?.preloadImage(image.url)?.let { drwable ->
+                        context.preloadImage(image.url)?.let { drawable ->
                             ImageUtils.save2Album(
-                                drwable.toBitmap(),
+                                drawable.toBitmap(),
+                                appName,
                                 Bitmap.CompressFormat.JPEG
                             )
                             snackBarManager.showMessages(R.string.save_picture_success)
                         }
                     }
                     1 -> scope.launch {
-                        MainActivity.context?.let { context ->
-                            context.preloadImage(image.url)?.let { drawable ->
-                                val file = ImageUtils.save2Album(
-                                    drawable.toBitmap(),
-                                    Bitmap.CompressFormat.JPEG
+                        context.preloadImage(image.url)?.let { drawable ->
+                            val file = ImageUtils.save2Album(
+                                drawable.toBitmap(),
+                                appName,
+                                Bitmap.CompressFormat.JPEG
+                            )
+                            context.startActivity(
+                                IntentUtils.getShareImageIntent(
+                                    file
                                 )
-                                context.startActivity(
-                                    IntentUtils.getShareImageIntent(
-                                        file
-                                    )
-                                )
-                            }
+                            )
                         }
                     }
                 }
@@ -108,7 +110,7 @@ fun DetailScreen(
             .clickable {
                 navigateUp.invoke()
             }
-            .background(Color.Black.copy(alpha = 0.8f))
+            .background(Color.Black.copy(alpha = 0.85f))
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {

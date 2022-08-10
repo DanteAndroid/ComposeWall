@@ -13,7 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.danteandroi.composewall.MenuItem
 import com.danteandroi.composewall.MenuItem.Companion.MainMenus
+import com.danteandroi.composewall.data.UiEvent
 import com.danteandroi.composewall.net.ImageViewModel
+import com.danteandroi.composewall.utils.EventManager
 import com.danteandroi.composewall.utils.InjectionUtils
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -56,7 +58,7 @@ fun TabScreen(
                     onClick = {
                         coroutineScope.launch {
                             if (pagerState.currentPage == index) {
-                                // Scroll to top
+                                EventManager.postEvent(UiEvent.ScrollToTop.name)
                             } else {
                                 pagerState.scrollToPage(index)
                             }
@@ -87,16 +89,15 @@ fun TabScreen(
                 modifier = Modifier.padding(top = 6.dp, start = 6.dp, end = 6.dp),
                 isExpandedScreen = isExpandedScreen,
                 uiState = uiState,
-                onViewImage = {
+                onClickImage = {
                     onViewImage.invoke(it, viewModel)
                 },
-                onRetry = {
+                onClickRetry = {
                     viewModel.fetchImages(menuItem, page, requestPage)
-                },
-                onScrollToBottom = {
-                    requestPage++
                 }
-            )
+            ) {
+                requestPage++
+            }
         }
 
     }
