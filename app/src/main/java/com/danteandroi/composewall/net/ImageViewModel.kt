@@ -4,14 +4,13 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.danteandroi.composewall.MenuItem
-import com.danteandroi.composewall.data.Image
-import com.danteandroi.composewall.data.LoadingUiState
-import com.danteandroi.composewall.data.UiState
-import com.danteandroi.composewall.data.UiStateSuccess
+import com.danteandroi.composewall.data.*
 import com.danteandroi.composewall.utils.preloadImage
 import com.danteandroi.composewall.utils.safeLaunch
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -23,7 +22,13 @@ class ImageViewModel(private val imageRepository: ImageRepository = ImageReposit
     val uiState = MutableStateFlow<UiState>(LoadingUiState)
 
     fun fetchImages(menuItem: MenuItem, index: Int, page: Int = 1) {
-        viewModelScope.safeLaunch {
+        uiState.update { LoadingUiState }
+        viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
+            throwable.printStackTrace()
+            uiState.update {
+                ErrorUiState
+            }
+        }) {
             val result = imageRepository.fetchImages(
                 apiClazz = menuItem.apiClazz,
                 baseUrl = menuItem.baseUrl,

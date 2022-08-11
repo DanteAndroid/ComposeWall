@@ -6,7 +6,7 @@ with [Jetpack Compose](https://developer.android.com/jetpack/compose).
 
 ### Download & screenshots
 
-[Download](releases/)
+[Download](https://github.com/DanteAndroid/ComposeWall/releases/)
 
 <img src="Screenshots/0.png" width="200"> <img src="Screenshots/1.png" width="200"> <img src="Screenshots/2.png" width="200">
 
