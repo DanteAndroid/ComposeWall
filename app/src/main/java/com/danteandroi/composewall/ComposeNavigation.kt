@@ -31,9 +31,7 @@ object ComposeDestinations {
 
 @Composable
 fun rememberComposeAppState(
-    scaffoldState: SnackbarHostState = remember {
-        SnackbarHostState()
-    },
+    scaffoldState: SnackbarHostState = SnackbarHostState(),
     snackBarManager: SnackBarManager = SnackBarManager,
     navController: NavHostController = rememberNavController(),
     resources: Resources = LocalContext.current.resources,

@@ -56,7 +56,7 @@ fun ComposeNavGraph(
                     }
                 }
                 AnimatedVisibility(
-                    currentDetailImage.isValidImage,
+                    currentDetailImage.isValid,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {

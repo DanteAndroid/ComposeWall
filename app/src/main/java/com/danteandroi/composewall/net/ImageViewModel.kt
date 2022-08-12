@@ -22,7 +22,9 @@ class ImageViewModel(private val imageRepository: ImageRepository = ImageReposit
     val uiState = MutableStateFlow<UiState>(LoadingUiState)
 
     fun fetchImages(menuItem: MenuItem, index: Int, page: Int = 1) {
-        uiState.update { LoadingUiState }
+        if (uiState.value !is UiStateSuccess) {
+            uiState.update { LoadingUiState }
+        }
         viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
             throwable.printStackTrace()
             uiState.update {

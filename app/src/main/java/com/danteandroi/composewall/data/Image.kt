@@ -18,8 +18,8 @@ data class Image(
     val height: Int = 0,
     val timestamp: Date = Date()
 ) {
-    val uniqueId = id + timestamp.time
-    val isValidImage get() = url.isNotEmpty() && thumbnail.isNotEmpty()
+
+    val isValid = url.isNotEmpty() && thumbnail.isNotEmpty()
 
     companion object {
         val EMPTY = Image("", "", "", "")

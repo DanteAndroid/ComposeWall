@@ -72,7 +72,7 @@ fun ImageListScreen(
                         )
                     ) {
                         items(uiState.images.size, key = {
-                            uiState.images[it].uniqueId
+                            uiState.images[it].id + it
                         }) {
                             val image = uiState.images[it]
                             ImageItem(

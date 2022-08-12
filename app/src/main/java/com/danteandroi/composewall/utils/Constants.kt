@@ -28,7 +28,7 @@ const val VIEW_PAGE = "page"
 const val ARG_API_TYPE = "api_type"
 const val ARG_TITLE = "title"
 
-const val PRELOAD_COUNT = 5
+const val PRELOAD_COUNT = 10
 
 // 每次加载数量
 const val PAGE_SIZE_FROM_NET = 20
