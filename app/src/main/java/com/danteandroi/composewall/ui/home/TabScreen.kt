@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.danteandroi.composewall.MenuItem
-import com.danteandroi.composewall.MenuItem.Companion.MainMenus
+import com.danteandroi.composewall.MenuItem.Companion.SafeMenus
 import com.danteandroi.composewall.data.UiEvent
 import com.danteandroi.composewall.net.ImageViewModel
 import com.danteandroi.composewall.utils.EventManager
@@ -106,5 +106,5 @@ fun TabScreen(
 @Preview(showBackground = true)
 @Composable
 fun TabScreenPreview() {
-    TabScreen(menuItem = MainMenus.first())
+    TabScreen(menuItem = SafeMenus.first())
 }

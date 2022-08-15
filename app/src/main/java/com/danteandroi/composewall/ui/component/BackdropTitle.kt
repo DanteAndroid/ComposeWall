@@ -30,7 +30,7 @@ fun BackdropTitle(
         .clickable {
             onTitleClick.invoke()
         }) {
-        val spaceHeight = if (isExpandedScreen) 8.dp else 16.dp
+        val spaceHeight = if (isExpandedScreen) 16.dp else 16.dp
         Spacer(modifier = modifier.height(spaceHeight))
         Text(
             modifier = Modifier.fillMaxWidth(),

@@ -8,8 +8,6 @@ import com.danteandroi.composewall.net.*
  * @author Du Wenyu
  * 2022/7/29
  */
-
-
 data class MenuItem(
     val name: String,
     val apiClazz: Class<*>,
@@ -18,7 +16,7 @@ data class MenuItem(
     val uiConfig: UiConfig
 ) {
     companion object {
-        val MainMenus = listOf(
+        val SafeMenus = listOf(
             MenuItem(
                 "Bcoderss",
                 Bcoderss::class.java,
@@ -39,15 +37,16 @@ data class MenuItem(
                 API.WALL_BASE,
                 API.wallHavenCategories,
                 UiConfig(2, 1.5f, LayoutType.Fixed)
-            ),
-            MenuItem(
-                "Yande",
-                Yande::class.java,
-                API.YANDE_BASE,
-                listOf("yande" to R.string.yande),
-                UiConfig(3, 0.66f, LayoutType.Fixed)
-            ),
+            )
         )
+        val AllMenus = SafeMenus +
+                MenuItem(
+                    "Yande",
+                    Yande::class.java,
+                    API.YANDE_BASE,
+                    listOf("yande" to R.string.yande),
+                    UiConfig(3, 0.66f, LayoutType.Fixed)
+                )
     }
 }
 
