@@ -19,6 +19,7 @@
     <string name="save_picture">Save image</string>
     <string name="share">Share</string>
     <string name="save_picture_success">Picture saved.</string>
+    <string name="save_picture_failed">Unable to save picture, please grant permission</string>
     <string name="secret_mode_on">Secret mode on.</string>
     <string name="secret_mode_off">Secret mode off.</string>
 </resources>

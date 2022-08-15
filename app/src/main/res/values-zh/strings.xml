@@ -20,6 +20,7 @@
     <string name="save_picture">保存原图</string>
     <string name="share">分享</string>
     <string name="save_picture_success">图片已保存。</string>
+    <string name="save_picture_failed">无法保存图片，请授予权限</string>
     <string name="secret_mode_on">私密模式已开启~</string>
     <string name="secret_mode_off">私密模式已关闭。</string>
 

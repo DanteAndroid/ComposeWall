@@ -27,6 +27,7 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import com.blankj.utilcode.util.ImageUtils
 import com.blankj.utilcode.util.IntentUtils
+import com.danteandroi.composewall.BuildConfig
 import com.danteandroi.composewall.R
 import com.danteandroi.composewall.data.Image
 import com.danteandroi.composewall.data.ImageDetailState
@@ -79,12 +80,21 @@ fun DetailScreen(
                 when (index) {
                     0 -> scope.launch {
                         context.preloadImage(image.url)?.let { drawable ->
-                            ImageUtils.save2Album(
+                            val file = ImageUtils.save2Album(
                                 drawable.toBitmap(),
                                 appName,
                                 Bitmap.CompressFormat.JPEG
                             )
-                            snackBarManager.showMessages(R.string.save_picture_success)
+                            if (file?.exists() == true) {
+                                snackBarManager.showMessages(R.string.save_picture_success)
+                            } else {
+                                snackBarManager.showMessages(R.string.save_picture_failed)
+                                context.startActivity(
+                                    IntentUtils.getLaunchAppDetailsSettingsIntent(
+                                        BuildConfig.APPLICATION_ID
+                                    )
+                                )
+                            }
                         }
                     }
                     1 -> scope.launch {
