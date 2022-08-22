@@ -11,9 +11,9 @@ import androidx.compose.runtime.Stable
 @Immutable
 data class ImageDetailState(val isDetail: Boolean, val url: String)
 
+@Stable
 sealed class UiState
 
-@Stable
 data class UiStateSuccess(
     val config: UiConfig = UiConfig(),
     val images: List<Image> = arrayListOf()
@@ -22,7 +22,6 @@ data class UiStateSuccess(
 object LoadingUiState : UiState()
 object ErrorUiState : UiState()
 
-@Stable
 data class UiConfig(
     val spanCount: Int = 2,
     val aspectRatio: Float = 0.56f,

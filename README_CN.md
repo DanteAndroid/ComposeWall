@@ -3,9 +3,14 @@
 [English version](README.md)
 ComposeWall 是一款由 [Jetpack Compose](https://developer.android.com/jetpack/compose) 打造的应用。
 
-### 下载与截图
+### 下载
 
-[下载App](https://github.com/DanteAndroid/ComposeWall/releases/)
+<a href="https://play.google.com/store/apps/details?id=com.v2ray.ang">
+<img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" width="165" height="64" />
+</a>
+[Releases](https://github.com/DanteAndroid/ComposeWall/releases/)
+
+### 截图
 
 <img src="Screenshots/0.png" width="200"> <img src="Screenshots/1.png" width="200"> <img src="Screenshots/2.png" width="200">
 
