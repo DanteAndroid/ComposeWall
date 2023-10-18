@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
-private val LightColors = lightColorScheme(
+private val lightColors = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
@@ -40,7 +40,7 @@ private val LightColors = lightColorScheme(
 )
 
 
-private val DarkColors = darkColorScheme(
+private val darkColors = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
@@ -75,9 +75,9 @@ fun ComposeWallTheme(
     content: @Composable () -> Unit
 ) {
     val colors = if (!useDarkTheme) {
-        LightColors
+        lightColors
     } else {
-        DarkColors
+        darkColors
     }
 
     val systemUiController = rememberSystemUiController()

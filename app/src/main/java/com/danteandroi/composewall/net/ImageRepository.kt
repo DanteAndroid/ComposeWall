@@ -19,7 +19,6 @@ import kotlinx.coroutines.withContext
  */
 object ImageRepository {
 
-    @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun fetchImages(
         apiClazz: Class<*>,
         baseUrl: String,

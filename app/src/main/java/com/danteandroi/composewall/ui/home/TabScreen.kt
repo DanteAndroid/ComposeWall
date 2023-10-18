@@ -1,5 +1,6 @@
 package com.danteandroi.composewall.ui.home
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,17 +17,13 @@ import com.danteandroi.composewall.MenuItem.Companion.SafeMenus
 import com.danteandroi.composewall.data.UiEvent
 import com.danteandroi.composewall.net.ImageViewModel
 import com.danteandroi.composewall.utils.EventManager
-import com.danteandroi.composewall.utils.InjectionUtils
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
 /**
  * @author Du Wenyu
  * 2022/7/29
  */
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabScreen(
     modifier: Modifier = Modifier,
@@ -36,12 +33,13 @@ fun TabScreen(
 ) {
     Column(modifier.background(MaterialTheme.colorScheme.background)) {
         val coroutineScope = rememberCoroutineScope()
-        val pagerState = rememberPagerState()
-        ScrollableTabRow(
+        val pagerState =
+            androidx.compose.foundation.pager.rememberPagerState(pageCount = { menuItem.category.size })
+        PrimaryScrollableTabRow(
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
             selectedTabIndex = pagerState.currentPage,
             indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
+                TabRowDefaults.SecondaryIndicator(
                     Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage])
                 )
             }
@@ -67,16 +65,17 @@ fun TabScreen(
                 )
             }
         }
-        HorizontalPager(
+        androidx.compose.foundation.pager.HorizontalPager(
             modifier = Modifier.fillMaxSize(),
-            count = menuItem.category.size,
             state = pagerState
         ) { page ->
-            val viewModel = remember(page, menuItem) {
-                InjectionUtils.provideImageViewModel()
-            }
+//            val viewModel = remember(page, menuItem) {
+//                InjectionUtils.provideImageViewModel()
+//            }
+            val viewModel: ImageViewModel =
+                androidx.lifecycle.viewmodel.compose.viewModel(key = page.toString() + menuItem.apiClazz.simpleName)
             var requestPage by remember(page, menuItem) {
-                mutableStateOf(1)
+                mutableIntStateOf(1)
             }
             LaunchedEffect(page, menuItem, requestPage) {
                 viewModel.fetchImages(menuItem, page, requestPage)
@@ -103,7 +102,7 @@ fun TabScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun TabScreenPreview() {
     TabScreen(menuItem = SafeMenus.first())

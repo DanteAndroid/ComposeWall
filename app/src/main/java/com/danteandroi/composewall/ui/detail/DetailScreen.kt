@@ -2,8 +2,12 @@ package com.danteandroi.composewall.ui.detail
 
 import android.graphics.Bitmap
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,7 +18,13 @@ import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,7 +54,6 @@ import timber.log.Timber
  */
 const val SCALE_ANIMATION_DURATION = 300
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
@@ -142,17 +151,18 @@ fun DetailScreen(
             }
         })
         AnimatedContent(detailState, transitionSpec = {
-            fadeIn(animationSpec = tween(SCALE_ANIMATION_DURATION)) +
+            (fadeIn(animationSpec = tween(SCALE_ANIMATION_DURATION)) +
                     scaleIn(
                         initialScale = 0.92f,
                         animationSpec = tween(SCALE_ANIMATION_DURATION)
-                    ) with
-                    scaleOut(
-                        targetScale = 0.92f,
-                        animationSpec = tween(SCALE_ANIMATION_DURATION, delayMillis = 90)
-                    )
+                    )).togetherWith(
+                scaleOut(
+                    targetScale = 0.92f,
+                    animationSpec = tween(SCALE_ANIMATION_DURATION, delayMillis = 90)
+                )
+            )
 
-        }, contentAlignment = Alignment.Center) { target ->
+        }, contentAlignment = Alignment.Center, label = "image") { target ->
             if (target.isDetail) {
                 Timber.d("Load detail $target")
                 AsyncImage(
@@ -164,6 +174,11 @@ fun DetailScreen(
                     model = target.url,
                     onSuccess = {
                         loading = false
+                    },
+                    onError = {
+                        loading = false
+                        detailState = ImageDetailState(true, image.thumbnail)
+                        Timber.d("ImageRequest: $it ${image.url}")
                     },
                     contentDescription = "Original image",
                     placeholder = rememberAsyncImagePainter(model = image.thumbnail)

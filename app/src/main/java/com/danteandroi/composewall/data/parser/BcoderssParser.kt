@@ -39,7 +39,7 @@ object BcoderssParser : IParser {
 
     private fun getOriginalUrl(thumbUrl: String): String {
         val end = "-${thumbUrl.substringAfterLast("-")}"
-        return thumbUrl.replace("https://m.bcoderss.com/", "http://img1.bcoderss.com/")
-            .replace(end, ".jpg")
+        return thumbUrl.replace(end, ".jpg")
     }
+
 }
