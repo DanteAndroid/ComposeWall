@@ -1,5 +1,6 @@
 package com.danteandroi.composewall
 
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -8,12 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost

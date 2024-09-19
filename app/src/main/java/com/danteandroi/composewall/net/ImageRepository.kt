@@ -18,7 +18,6 @@ import kotlinx.coroutines.withContext
  * 2022/7/29
  */
 object ImageRepository {
-
     suspend fun fetchImages(
         apiClazz: Class<*>,
         baseUrl: String,
