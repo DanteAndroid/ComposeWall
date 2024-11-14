@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SignalWifiBad
 import androidx.compose.material3.CircularProgressIndicator
@@ -40,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.blankj.utilcode.util.LogUtils
 import com.danteandroi.composewall.R
 import com.danteandroi.composewall.data.ErrorUiState
 import com.danteandroi.composewall.data.Image
@@ -51,7 +51,8 @@ import com.danteandroi.composewall.data.UiStateSuccess
 import com.danteandroi.composewall.utils.EventManager
 import com.danteandroi.composewall.utils.PRELOAD_COUNT
 import com.danteandroi.composewall.utils.isScrolledToBottom
-import com.danteandroi.composewall.widget.StaggeredVerticalGrid
+import com.danteandroi.composewall.utils.isScrolledToTop
+import com.danteandroi.composewall.widget.ScrollableStaggeredGrid
 import timber.log.Timber
 
 /**
@@ -69,6 +70,7 @@ fun ImageListScreen(
 ) {
     when (uiState) {
         is UiStateSuccess -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Center) {
             when (uiState.config.type) {
                 LayoutType.Fixed -> {
                     val scrollState = rememberLazyGridState()
@@ -80,11 +82,15 @@ fun ImageListScreen(
                     LaunchedEffect(scrollToBottom) {
                         if (scrollToBottom) onScrollToBottom.invoke()
                     }
-                    EventManager.Handler(handleEvent = {
+                    EventManager.Handler {
                         if (it.name == UiEvent.ScrollToTop.name) {
-                            scrollState.scrollToItem(0)
+                            if (scrollState.isScrolledToTop()) {
+                                EventManager.postEvent(UiEvent.Refresh.name)
+                            } else {
+                                scrollState.scrollToItem(0)
+                            }
                         }
-                    })
+                    }
                     LazyVerticalGrid(
                         modifier = modifier,
                         state = scrollState,
@@ -108,15 +114,31 @@ fun ImageListScreen(
 
                 LayoutType.Staggered -> {
                     val scrollState = rememberScrollState()
-                    StaggeredVerticalGrid(
-                        modifier = modifier.verticalScroll(scrollState),
-                        if (isExpandedScreen) 300.dp else 150.dp
+                    EventManager.Handler {
+                        if (it.name == UiEvent.ScrollToTop.name) {
+                            if (scrollState.value == 0) {
+                                EventManager.postEvent(UiEvent.Refresh.name)
+                            } else {
+                                scrollState.scrollTo(0)
+                            }
+                        }
+                    }
+                    ScrollableStaggeredGrid(
+                        scrollState = scrollState,
+                        maxColumnWidth = if (isExpandedScreen) 300.dp else 150.dp,
+                        onScrollToBottom = onScrollToBottom
                     ) {
                         uiState.images.forEach { image ->
                             ImageItem(onViewImage = onClickImage, image = image)
                         }
-                        LoadMore(onScrollToBottom)
                     }
+                }
+            }
+                LogUtils.d("isLoading ${uiState.isLoading}")
+                if (uiState.isLoading) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
             }
         }
@@ -130,6 +152,7 @@ fun ImageListScreen(
         is ErrorUiState -> {
             Column(
                 Modifier
+                    .fillMaxSize()
                     .clickable {
                         onClickRetry.invoke()
                     },

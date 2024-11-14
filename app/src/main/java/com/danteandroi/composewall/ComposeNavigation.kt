@@ -63,11 +63,15 @@ class ComposeAppState(
     var currentViewModel: ImageViewModel? = null
         private set
 
-    fun navigateUp() = navController.navigateUp()
+    fun navigateUp() {
+        navController.navigateUp()
+    }
 
     fun navigateToImage(id: String, viewModel: ImageViewModel) {
         currentViewModel = viewModel
-        navController.navigate(route = Destinations.Detail(id))
+        navController.navigate(route = Destinations.Detail(id)) {
+            launchSingleTop = true
+        }
     }
 
 }

@@ -1,10 +1,44 @@
 package com.danteandroi.composewall.widget
 
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Dp
+import kotlinx.coroutines.flow.collectLatest
 import kotlin.math.ceil
+
+@Composable
+fun ScrollableStaggeredGrid(
+    modifier: Modifier = Modifier.fillMaxSize(),
+    scrollState: ScrollState,
+    maxColumnWidth: Dp,
+    onScrollToBottom: () -> Unit = {},
+    content: @Composable () -> Unit
+) {
+    Column(
+        modifier = modifier.verticalScroll(scrollState)
+    ) {
+        // 检测滚动到达底部
+        LaunchedEffect(scrollState) {
+            snapshotFlow { scrollState.value }
+                .collectLatest { scrollY ->
+                    val isAtBottom = scrollY >= (scrollState.maxValue - 10) // 允许一定的偏差
+                    if (isAtBottom) {
+                        onScrollToBottom.invoke()
+                    }
+                }
+        }
+        StaggeredVerticalGrid(maxColumnWidth = maxColumnWidth) {
+            content()
+        }
+    }
+}
 
 @Composable
 fun StaggeredVerticalGrid(
@@ -16,9 +50,7 @@ fun StaggeredVerticalGrid(
         content = content,
         modifier = modifier
     ) { measurables, constraints ->
-        check(constraints.hasBoundedWidth) {
-            "Unbounded width not supported"
-        }
+        check(constraints.hasBoundedWidth) { "Unbounded width not supported" }
         val columns = ceil(constraints.maxWidth / maxColumnWidth.toPx()).toInt()
         val columnWidth = constraints.maxWidth / columns
         val itemConstraints = constraints.copy(maxWidth = columnWidth)

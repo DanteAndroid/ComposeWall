@@ -1,7 +1,6 @@
 package com.danteandroi.composewall.data
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
 
 /**
  * @author Dante
@@ -10,17 +9,19 @@ import androidx.compose.runtime.Stable
 @Immutable
 data class ImageDetailState(val isDetail: Boolean, val url: String)
 
-@Stable
 sealed class UiState
 
+@Immutable
 data class UiStateSuccess(
     val config: UiConfig = UiConfig(),
-    val images: List<Image> = arrayListOf()
+    val images: List<Image> = arrayListOf(),
+    val isLoading: Boolean = false
 ) : UiState()
 
 data object LoadingUiState : UiState()
 data object ErrorUiState : UiState()
 
+@Immutable
 data class UiConfig(
     val spanCount: Int = 2,
     val aspectRatio: Float = 0.56f,

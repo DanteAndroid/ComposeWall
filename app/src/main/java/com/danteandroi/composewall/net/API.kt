@@ -12,7 +12,6 @@ object API {
 
     const val WALL_BASE = "https://wallhaven.cc/"
     const val YANDE_BASE = "https://yande.re/"
-    const val MANIA_BASE = "https://www.moviemania.io/"
     const val BCODERSS_BASE = "https://m.bcoderss.com/"
 
     val wallHavenCategories =
@@ -24,12 +23,6 @@ object API {
             "landscape" to R.string.landscape,
             "dark" to R.string.dark,
             "simple" to R.string.simple
-        )
-    val maniaCategories =
-        listOf(
-            "new" to R.string.newest,
-            "popular" to R.string.popular,
-            "trending" to R.string.trending
         )
     val bcoderssCategories =
         listOf(

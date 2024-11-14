@@ -38,6 +38,7 @@ import coil.request.ImageRequest
 import com.blankj.utilcode.util.ImageUtils
 import com.blankj.utilcode.util.IntentUtils
 import com.danteandroi.composewall.BuildConfig
+import com.danteandroi.composewall.DetailThumbnailRatio
 import com.danteandroi.composewall.R
 import com.danteandroi.composewall.data.Image
 import com.danteandroi.composewall.data.ImageDetailState
@@ -130,7 +131,8 @@ fun DetailScreen(
                 .clickable {
                     navigateUp.invoke()
                 }
-                .fillMaxSize()
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
             val context = LocalContext.current
             LaunchedEffect(key1 = Unit, block = {
@@ -185,7 +187,7 @@ fun DetailScreen(
                 } else {
                     Timber.d("Load thumbnail $target")
                     AsyncImage(
-                        modifier = Modifier.fillMaxWidth(0.5f),
+                        modifier = Modifier.fillMaxWidth(DetailThumbnailRatio),
                         model = target.url,
                         contentDescription = "thumbnail image"
                     )

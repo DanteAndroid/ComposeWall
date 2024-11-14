@@ -26,8 +26,12 @@ class ImageViewModel(private val imageRepository: ImageRepository = ImageReposit
     val uiState = MutableStateFlow<UiState>(LoadingUiState)
 
     fun fetchImages(menuItem: MenuItem, index: Int, page: Int = 1) {
-        if (uiState.value !is UiStateSuccess) {
-            uiState.update { LoadingUiState }
+        uiState.update {
+            if (it is UiStateSuccess) {
+                it.copy(isLoading = true)
+            } else {
+                LoadingUiState
+            }
         }
         viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
             throwable.printStackTrace()
@@ -41,16 +45,18 @@ class ImageViewModel(private val imageRepository: ImageRepository = ImageReposit
                 category = menuItem.category[index].first,
                 page = page
             )
-            uiState.update {
-                if (it is UiStateSuccess) {
-                    it.copy(
+            uiState.update { state ->
+                if (state is UiStateSuccess) {
+                    state.copy(
                         config = menuItem.uiConfig,
-                        images = it.images + result
+                        images = (state.images + result).distinctBy { it.id },
+                        isLoading = false
                     )
                 } else {
                     UiStateSuccess(
                         config = menuItem.uiConfig,
-                        images = result
+                        images = result,
+                        isLoading = false
                     )
                 }
             }

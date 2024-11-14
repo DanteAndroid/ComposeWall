@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.danteandroi.composewall.MenuItem
-import com.danteandroi.composewall.MenuItem.Companion.SafeMenus
+import com.danteandroi.composewall.SafeMenus
 import com.danteandroi.composewall.data.UiEvent
 import com.danteandroi.composewall.net.ImageViewModel
 import com.danteandroi.composewall.utils.EventManager
@@ -46,6 +46,7 @@ fun TabScreen(
         ScrollableTabRow(
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
             selectedTabIndex = pagerState.currentPage,
+            edgePadding = 16.dp
         ) {
             menuItem.category.forEachIndexed { index, category ->
                 Tab(
@@ -76,6 +77,11 @@ fun TabScreen(
                 viewModel(key = page.toString() + menuItem.apiClazz.simpleName)
             var requestPage by remember(page, menuItem) {
                 mutableIntStateOf(1)
+            }
+            EventManager.Handler {
+                if (it.name == UiEvent.Refresh.name) {
+                    requestPage = 1
+                }
             }
             LaunchedEffect(page, menuItem, requestPage) {
                 viewModel.fetchImages(menuItem, page, requestPage)

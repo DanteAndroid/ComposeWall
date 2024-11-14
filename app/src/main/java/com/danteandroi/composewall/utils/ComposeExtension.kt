@@ -19,6 +19,9 @@ fun LazyGridState.isScrolledToBottom(preloadCount: Int = 1) =
         it.index > layoutInfo.totalItemsCount - preloadCount
     } ?: false
 
+fun LazyListState.isScrolledToTop() = layoutInfo.visibleItemsInfo.firstOrNull()?.index == 0
+fun LazyGridState.isScrolledToTop() = layoutInfo.visibleItemsInfo.firstOrNull()?.index == 0
+
 fun WindowSizeClass?.isExpandedScreen(): Boolean {
     if (this == null) return false
     return this.widthSizeClass >= WindowWidthSizeClass.Medium
