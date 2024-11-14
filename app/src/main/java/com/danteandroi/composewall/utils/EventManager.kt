@@ -1,6 +1,10 @@
 package com.danteandroi.composewall.utils
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -8,7 +12,7 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/8/9
  */
 data class Event(val id: Long, val name: String)
@@ -32,7 +36,7 @@ object EventManager {
 
     @Composable
     fun Handler(handleEvent: suspend (Event) -> Unit) {
-        val events by eventList.collectAsState()
+        val events by eventList.collectAsStateWithLifecycle()
         events.lastOrNull()?.let { latestEvent ->
             val scope = rememberCoroutineScope()
             LaunchedEffect(events) {

@@ -2,9 +2,6 @@ package com.danteandroi.composewall
 
 //noinspection UsingMaterialAndMaterial3Libraries
 //noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -16,73 +13,43 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.danteandroi.composewall.data.Image
+import androidx.navigation.toRoute
 import com.danteandroi.composewall.ui.component.BackdropScaffold
 import com.danteandroi.composewall.ui.detail.DetailScreen
 import com.danteandroi.composewall.utils.isExpandedScreen
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/8/2
  */
 @Composable
 fun ComposeNavGraph(
     modifier: Modifier = Modifier,
     appState: ComposeAppState,
-    sizeClass: WindowSizeClass? = null,
-    startDestination: String = ComposeDestinations.HOME
+    sizeClass: WindowSizeClass? = null
 ) {
     NavHost(
         modifier = modifier,
-        startDestination = startDestination,
+        startDestination = Destinations.Home,
         navController = appState.navController
     ) {
-        composable(ComposeDestinations.HOME) {
-            var currentDetailImage by remember {
-                mutableStateOf(Image.EMPTY)
-            }
+        composable<Destinations.Home> {
             Box(modifier = modifier) {
                 BackdropScaffold(
                     modifier = Modifier.statusBarsPadding(),
                     scaffoldState = rememberBackdropScaffoldState(initialValue = BackdropValue.Concealed),
                     sizeClass.isExpandedScreen()
                 ) { id, vm ->
-                    vm.findImage(id)?.let { image ->
-                        currentDetailImage = image
-                    }
-                }
-                AnimatedVisibility(
-                    currentDetailImage.isValid,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    Scaffold(snackbarHost = { SnackbarHost(hostState = appState.scaffoldState) }) { paddings ->
-                        DetailScreen(
-                            Modifier.padding(paddings),
-                            image = currentDetailImage,
-                            navigateUp = { currentDetailImage = Image.EMPTY })
-                    }
+                    appState.navigateToImage(id, vm)
                 }
             }
         }
-        composable(
-            "${ComposeDestinations.DETAIL}/{${ComposeDestinations.DETAIL_ID}}",
-            arguments = listOf(navArgument(ComposeDestinations.DETAIL_ID) {
-                type = NavType.StringType
-            })
-        ) {
-            // Unused destination
-            val id = requireNotNull(it.arguments).getString(ComposeDestinations.DETAIL_ID)!!
-            appState.currentViewModel?.findImage(id)?.let { image ->
+        composable<Destinations.Detail> { backstackEntry ->
+            val detail = backstackEntry.toRoute<Destinations.Detail>()
+            appState.currentViewModel?.findImage(detail.id)?.let { image ->
                 Scaffold(snackbarHost = { SnackbarHost(hostState = appState.scaffoldState) }) { paddings ->
                     DetailScreen(
                         Modifier.padding(paddings),

@@ -6,7 +6,7 @@ import coil.imageLoader
 import coil.request.ImageRequest
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/8/3
  */
 

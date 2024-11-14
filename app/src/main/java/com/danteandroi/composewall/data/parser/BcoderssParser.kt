@@ -6,7 +6,7 @@ import org.jsoup.Jsoup
 import java.io.IOException
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2019-09-05
  */
 object BcoderssParser : IParser {

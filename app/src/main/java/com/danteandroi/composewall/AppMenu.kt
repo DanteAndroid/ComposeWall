@@ -2,10 +2,14 @@ package com.danteandroi.composewall
 
 import com.danteandroi.composewall.data.LayoutType
 import com.danteandroi.composewall.data.UiConfig
-import com.danteandroi.composewall.net.*
+import com.danteandroi.composewall.net.API
+import com.danteandroi.composewall.net.Bcoderss
+import com.danteandroi.composewall.net.Mania
+import com.danteandroi.composewall.net.WallHaven
+import com.danteandroi.composewall.net.Yande
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/7/29
  */
 data class MenuItem(

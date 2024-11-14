@@ -7,8 +7,8 @@ import com.danteandroi.composewall.R
  */
 object API {
 
-    const val GITHUB_RAW = "https://raw.githubusercontent.com/DanteAndroid/ThreeDimens/master/"
-    const val DOWNLOAD_BASE = "https://github.com/DanteAndroid/ThreeDimens/releases/download/"
+    const val GITHUB_RAW = "https://raw.githubusercontent.com/DanteAndroid/ComposeWall/master/"
+    const val DOWNLOAD_BASE = "https://github.com/DanteAndroid/ComposeWall/releases/download/"
 
     const val WALL_BASE = "https://wallhaven.cc/"
     const val YANDE_BASE = "https://yande.re/"

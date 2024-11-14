@@ -1,7 +1,7 @@
 package com.danteandroi.composewall.data
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/8/9
  */
 enum class UiEvent {

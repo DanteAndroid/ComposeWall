@@ -8,7 +8,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +17,7 @@ import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/8/2
  */
 const val SCALE_ANIMATION_DURATION = 300
@@ -124,75 +124,75 @@ fun DetailScreen(
             }
         )
     }
-    Box(
-        modifier = modifier
-            .clickable {
-                navigateUp.invoke()
-            }
-            .background(Color.Black.copy(alpha = 0.85f))
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        val context = LocalContext.current
-        LaunchedEffect(key1 = Unit, block = {
-            scope.launch {
-                Timber.d("ImageRequest: ${image.url}")
-                context.imageLoader.execute(
-                    ImageRequest.Builder(context).data(image.url)
-                        .listener(onError = { _, _ ->
-                            detailState =
-                                ImageDetailState(true, image.url.alternativeImageUrl())
-                            Timber.d("ImageRequest onError $detailState")
-                        }, onSuccess = { _, _ ->
-                            detailState = ImageDetailState(true, image.url)
-                            Timber.d("ImageRequest onSuccess $detailState")
-                        }).build()
+    Surface(color = Color.Black.copy(0.85f)) {
+        Box(
+            modifier = modifier
+                .clickable {
+                    navigateUp.invoke()
+                }
+                .fillMaxSize()
+        ) {
+            val context = LocalContext.current
+            LaunchedEffect(key1 = Unit, block = {
+                scope.launch {
+                    Timber.d("ImageRequest: ${image.url}")
+                    context.imageLoader.execute(
+                        ImageRequest.Builder(context).data(image.url)
+                            .listener(onError = { _, _ ->
+                                detailState =
+                                    ImageDetailState(true, image.url.alternativeImageUrl())
+                                Timber.d("ImageRequest onError $detailState")
+                            }, onSuccess = { _, _ ->
+                                detailState = ImageDetailState(true, image.url)
+                                Timber.d("ImageRequest onSuccess $detailState")
+                            }).build()
+                    )
+                }
+            })
+            AnimatedContent(detailState, transitionSpec = {
+                (fadeIn(animationSpec = tween(SCALE_ANIMATION_DURATION)) +
+                        scaleIn(
+                            initialScale = 0.92f,
+                            animationSpec = tween(SCALE_ANIMATION_DURATION)
+                        )).togetherWith(
+                    scaleOut(
+                        targetScale = 0.92f,
+                        animationSpec = tween(SCALE_ANIMATION_DURATION, delayMillis = 90)
+                    )
                 )
-            }
-        })
-        AnimatedContent(detailState, transitionSpec = {
-            (fadeIn(animationSpec = tween(SCALE_ANIMATION_DURATION)) +
-                    scaleIn(
-                        initialScale = 0.92f,
-                        animationSpec = tween(SCALE_ANIMATION_DURATION)
-                    )).togetherWith(
-                scaleOut(
-                    targetScale = 0.92f,
-                    animationSpec = tween(SCALE_ANIMATION_DURATION, delayMillis = 90)
-                )
-            )
 
-        }, contentAlignment = Alignment.Center, label = "image") { target ->
-            if (target.isDetail) {
-                Timber.d("Load detail $target")
-                AsyncImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            showOptions = loading.not()
+            }, contentAlignment = Alignment.Center, label = "image") { target ->
+                if (target.isDetail) {
+                    Timber.d("Load detail $target")
+                    AsyncImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                showOptions = loading.not()
+                            },
+                        model = target.url,
+                        onSuccess = {
+                            loading = false
                         },
-                    model = target.url,
-                    onSuccess = {
-                        loading = false
-                    },
-                    onError = {
-                        loading = false
-                        detailState = ImageDetailState(true, image.thumbnail)
-                        Timber.d("ImageRequest: $it ${image.url}")
-                    },
-                    contentDescription = "Original image",
-                    placeholder = rememberAsyncImagePainter(model = image.thumbnail)
-                )
-            } else {
-                Timber.d("Load thumbnail $target")
-                AsyncImage(
-                    modifier = Modifier.fillMaxWidth(0.5f),
-                    model = target.url,
-                    contentDescription = "thumbnail image"
-                )
+                        onError = {
+                            loading = false
+                            detailState = ImageDetailState(true, image.thumbnail)
+                            Timber.d("ImageRequest: $it ${image.url}")
+                        },
+                        contentDescription = "Original image",
+                        placeholder = rememberAsyncImagePainter(model = image.thumbnail)
+                    )
+                } else {
+                    Timber.d("Load thumbnail $target")
+                    AsyncImage(
+                        modifier = Modifier.fillMaxWidth(0.5f),
+                        model = target.url,
+                        contentDescription = "thumbnail image"
+                    )
+                }
             }
+            if (loading) CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
-        if (loading) CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
     }
 }
 

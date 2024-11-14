@@ -8,7 +8,7 @@ import com.danteandroi.composewall.R
 import timber.log.Timber
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/8/15
  */
 object SecretModeUtil {

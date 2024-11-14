@@ -1,8 +1,20 @@
 package com.danteandroi.composewall.ui.component
 
-import androidx.compose.material.*
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.BackdropScaffold
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.BackdropScaffoldState
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.BackdropValue
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.danteandroi.composewall.MenuItem.Companion.AllMenus
@@ -13,10 +25,9 @@ import com.danteandroi.composewall.utils.SecretModeUtil
 import kotlinx.coroutines.launch
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/7/29
  */
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BackdropScaffold(
     modifier: Modifier = Modifier,
@@ -26,7 +37,7 @@ fun BackdropScaffold(
 ) {
     val menus = if (SecretModeUtil.isSecretMode()) AllMenus else SafeMenus
     var currentMenu by remember {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
     val coroutine = rememberCoroutineScope()
     BackdropScaffold(
@@ -72,7 +83,6 @@ fun BackdropScaffold(
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
 fun ComposeBackdropScaffoldPreview() {

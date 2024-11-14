@@ -6,7 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.danteandroi.composewall.ui.theme.ComposeWallTheme
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/7/29
  */
 @Composable

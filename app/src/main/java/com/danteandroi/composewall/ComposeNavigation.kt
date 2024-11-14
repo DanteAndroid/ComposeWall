@@ -13,18 +13,20 @@ import com.danteandroi.composewall.net.ImageViewModel
 import com.danteandroi.composewall.utils.SnackBarManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/8/2
  */
-object ComposeDestinations {
+sealed class Destinations {
+    @Serializable
+    object Home
 
-    const val HOME = "home"
-    const val DETAIL_ID = "id"
-    const val DETAIL = "detail"
-
+    @Serializable
+    data class Detail(val id: String)
 }
+
 
 @Composable
 fun rememberComposeAppState(
@@ -62,5 +64,10 @@ class ComposeAppState(
         private set
 
     fun navigateUp() = navController.navigateUp()
+
+    fun navigateToImage(id: String, viewModel: ImageViewModel) {
+        currentViewModel = viewModel
+        navController.navigate(route = Destinations.Detail(id))
+    }
 
 }

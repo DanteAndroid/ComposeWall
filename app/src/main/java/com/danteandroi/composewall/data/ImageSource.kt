@@ -6,7 +6,7 @@ import com.danteandroi.composewall.MenuItem
 import com.danteandroi.composewall.net.ImageRepository
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/8/3
  */
 class ImageSource(private val menuItem: MenuItem, private val repository: ImageRepository) :

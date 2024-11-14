@@ -1,12 +1,13 @@
 package com.danteandroi.composewall.utils
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2021/12/30
  */
 inline fun <reified T> Any?.tryCast(block: T.() -> Unit) {
@@ -17,7 +18,11 @@ inline fun <reified T> Any?.tryCast(block: T.() -> Unit) {
 
 private val coroutineExceptionHandler: CoroutineExceptionHandler =
     CoroutineExceptionHandler { _, throwable ->
-        throwable.printStackTrace()
+        if (throwable is CancellationException) {
+            throw throwable
+        } else {
+            throwable.printStackTrace()
+        }
     }
 
 fun CoroutineScope.safeLaunch(
@@ -27,14 +32,4 @@ fun CoroutineScope.safeLaunch(
     return this.launch(exceptionHandler) {
         launchBody.invoke()
     }
-}
-
-fun buildKeyValueMap(vararg params: Any): HashMap<String, String> {
-    val map = hashMapOf<String, String>()
-    for (i in 0 until params.size / 2) {
-        val key = params[2 * i]
-        val value = params[2 * i + 1]
-        map[key.toString()] = value.toString()
-    }
-    return map
 }

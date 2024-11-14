@@ -28,19 +28,6 @@ class NetService private constructor(val url: String = "") {
             }
     }
 
-    var netApi: Any? = null
-
-    inline fun <reified T> getApi(): T {
-        if (netApi == null) {
-            synchronized(this::class.java) {
-                if (netApi == null) {
-                    netApi = createRetrofit(url).create(T::class.java)
-                }
-            }
-        }
-        return netApi!! as T
-    }
-
     inline fun <reified T> createApi(baseUrl: String = url, okHttpClient: OkHttpClient? = null): T {
         if (okHttpClient == null) return createRetrofit(baseUrl).create(T::class.java)
         return createRetrofit(baseUrl, okHttpClient).create(T::class.java)
@@ -58,7 +45,7 @@ class NetService private constructor(val url: String = "") {
             .build()
     }
 
-    fun getBasicOkHttpClient(): OkHttpClient.Builder {
+    private fun getBasicOkHttpClient(): OkHttpClient.Builder {
         val loggingInterceptor = HttpLoggingInterceptor()
             .apply {
                 level = if (com.danteandroi.composewall.BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC

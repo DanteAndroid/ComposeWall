@@ -6,7 +6,7 @@ import org.jsoup.Jsoup
 import java.io.IOException
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2019-09-05
  */
 object YandeParser : IParser {
@@ -23,7 +23,6 @@ object YandeParser : IParser {
                 if (originalUrl.isNullOrBlank()) continue
                 val refer = a?.attr("href") ?: ""
                 val thumbUrl = a?.selectFirst("img")?.attr("src") ?: originalUrl
-//                val size = preloadImage(thumbUrl)
                 images.add(
                     Image(
                         id = originalUrl.substringAfterLast("/"),

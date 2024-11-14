@@ -1,11 +1,9 @@
 package com.danteandroi.composewall.ui.home
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
@@ -22,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.danteandroi.composewall.MenuItem
 import com.danteandroi.composewall.MenuItem.Companion.SafeMenus
 import com.danteandroi.composewall.data.UiEvent
@@ -30,10 +29,9 @@ import com.danteandroi.composewall.utils.EventManager
 import kotlinx.coroutines.launch
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/7/29
  */
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TabScreen(
     modifier: Modifier = Modifier,
@@ -74,11 +72,8 @@ fun TabScreen(
             modifier = Modifier.fillMaxSize(),
             state = pagerState
         ) { page ->
-//            val viewModel = remember(page, menuItem) {
-//                InjectionUtils.provideImageViewModel()
-//            }
             val viewModel: ImageViewModel =
-                androidx.lifecycle.viewmodel.compose.viewModel(key = page.toString() + menuItem.apiClazz.simpleName)
+                viewModel(key = page.toString() + menuItem.apiClazz.simpleName)
             var requestPage by remember(page, menuItem) {
                 mutableIntStateOf(1)
             }
@@ -103,7 +98,6 @@ fun TabScreen(
                 requestPage++
             }
         }
-
     }
 }
 

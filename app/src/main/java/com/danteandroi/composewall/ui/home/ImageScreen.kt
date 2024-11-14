@@ -55,7 +55,7 @@ import com.danteandroi.composewall.widget.StaggeredVerticalGrid
 import timber.log.Timber
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/7/29
  */
 @Composable

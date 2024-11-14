@@ -6,7 +6,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/8/3
  */
 fun LazyListState.isScrolledToBottom(preloadCount: Int = 1) =

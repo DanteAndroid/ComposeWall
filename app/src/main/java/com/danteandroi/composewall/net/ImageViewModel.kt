@@ -4,7 +4,11 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.danteandroi.composewall.MenuItem
-import com.danteandroi.composewall.data.*
+import com.danteandroi.composewall.data.ErrorUiState
+import com.danteandroi.composewall.data.Image
+import com.danteandroi.composewall.data.LoadingUiState
+import com.danteandroi.composewall.data.UiState
+import com.danteandroi.composewall.data.UiStateSuccess
 import com.danteandroi.composewall.utils.preloadImage
 import com.danteandroi.composewall.utils.safeLaunch
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -14,7 +18,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/7/29
  */
 class ImageViewModel(private val imageRepository: ImageRepository = ImageRepository) : ViewModel() {

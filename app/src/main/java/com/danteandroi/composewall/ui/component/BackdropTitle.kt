@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.danteandroi.composewall.R
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/7/29
  */
 @Composable

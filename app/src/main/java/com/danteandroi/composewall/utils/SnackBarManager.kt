@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.update
 import java.util.UUID
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/8/3
  */
 data class Message(val id: Long, @StringRes val message: Int)

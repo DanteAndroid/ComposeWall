@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import java.util.Date
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/7/29
  */
 @Immutable

@@ -4,10 +4,9 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/8/5
  */
-
 @Immutable
 data class ImageDetailState(val isDetail: Boolean, val url: String)
 
@@ -19,8 +18,8 @@ data class UiStateSuccess(
     val images: List<Image> = arrayListOf()
 ) : UiState()
 
-object LoadingUiState : UiState()
-object ErrorUiState : UiState()
+data object LoadingUiState : UiState()
+data object ErrorUiState : UiState()
 
 data class UiConfig(
     val spanCount: Int = 2,

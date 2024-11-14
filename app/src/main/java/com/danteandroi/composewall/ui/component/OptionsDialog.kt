@@ -2,10 +2,16 @@ package com.danteandroi.composewall.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,9 +20,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/8/6
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OptionsDialog(
     modifier: Modifier = Modifier,
@@ -24,9 +31,10 @@ fun OptionsDialog(
     onDismissRequest: () -> Unit,
     onItemClick: (Int) -> Unit
 ) {
-    AlertDialog(modifier = modifier,
+    BasicAlertDialog(
+        modifier = modifier,
         onDismissRequest = onDismissRequest,
-        buttons = {
+        content = {
             Spacer(modifier = Modifier.size(12.dp))
             optionsArray.forEachIndexed { index, res ->
                 Row(

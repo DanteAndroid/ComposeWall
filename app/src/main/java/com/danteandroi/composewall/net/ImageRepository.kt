@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * @author Du Wenyu
+ * @author Dante
  * 2022/7/29
  */
 object ImageRepository {
