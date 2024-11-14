@@ -39,7 +39,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.blankj.utilcode.util.LogUtils
 import com.danteandroi.composewall.R
 import com.danteandroi.composewall.data.ErrorUiState
 import com.danteandroi.composewall.data.Image
@@ -124,6 +123,7 @@ fun ImageListScreen(
                         }
                     }
                     ScrollableStaggeredGrid(
+                        modifier = modifier,
                         scrollState = scrollState,
                         maxColumnWidth = if (isExpandedScreen) 300.dp else 150.dp,
                         onScrollToBottom = onScrollToBottom
@@ -134,7 +134,6 @@ fun ImageListScreen(
                     }
                 }
             }
-                LogUtils.d("isLoading ${uiState.isLoading}")
                 if (uiState.isLoading) {
                     CircularProgressIndicator(
                         color = MaterialTheme.colorScheme.primary

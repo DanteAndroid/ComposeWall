@@ -10,6 +10,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Dp
+import com.danteandroi.composewall.utils.isScrolledToBottom
 import kotlinx.coroutines.flow.collectLatest
 import kotlin.math.ceil
 
@@ -27,9 +28,8 @@ fun ScrollableStaggeredGrid(
         // 检测滚动到达底部
         LaunchedEffect(scrollState) {
             snapshotFlow { scrollState.value }
-                .collectLatest { scrollY ->
-                    val isAtBottom = scrollY >= (scrollState.maxValue - 10) // 允许一定的偏差
-                    if (isAtBottom) {
+                .collectLatest {
+                    if (scrollState.isScrolledToBottom()) {
                         onScrollToBottom.invoke()
                     }
                 }

@@ -1,5 +1,6 @@
 package com.danteandroi.composewall.utils
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -19,7 +20,10 @@ fun LazyGridState.isScrolledToBottom(preloadCount: Int = 1) =
         it.index > layoutInfo.totalItemsCount - preloadCount
     } ?: false
 
+fun ScrollState.isScrolledToBottom() = this.maxValue > 0 && this.value >= (this.maxValue - 10)
+
 fun LazyListState.isScrolledToTop() = layoutInfo.visibleItemsInfo.firstOrNull()?.index == 0
+
 fun LazyGridState.isScrolledToTop() = layoutInfo.visibleItemsInfo.firstOrNull()?.index == 0
 
 fun WindowSizeClass?.isExpandedScreen(): Boolean {
