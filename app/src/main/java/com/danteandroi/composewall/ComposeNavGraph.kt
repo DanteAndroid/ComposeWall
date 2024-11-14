@@ -1,14 +1,16 @@
 package com.danteandroi.composewall
 
 //noinspection UsingMaterialAndMaterial3Libraries
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BackdropValue
-import androidx.compose.material.ExperimentalMaterialApi
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -32,7 +34,6 @@ import com.danteandroi.composewall.utils.isExpandedScreen
  * @author Du Wenyu
  * 2022/8/2
  */
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ComposeNavGraph(
     modifier: Modifier = Modifier,

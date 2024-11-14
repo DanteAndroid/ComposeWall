@@ -7,9 +7,6 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.Lifecycle
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.danteandroi.composewall.net.ImageViewModel
@@ -41,7 +38,7 @@ fun rememberComposeAppState(
 }
 
 @Stable
-class ComposeAppState constructor(
+class ComposeAppState(
     val scaffoldState: SnackbarHostState,
     private val snackBarManager: SnackBarManager,
     private val resources: Resources,
@@ -64,32 +61,6 @@ class ComposeAppState constructor(
     var currentViewModel: ImageViewModel? = null
         private set
 
-    val currentRoute: String? get() = navController.currentDestination?.route
-
     fun navigateUp() = navController.navigateUp()
 
-    fun navigateToHomeRoute(route: String) {
-        if (route != currentRoute) {
-            navController.navigate(route) {
-                launchSingleTop = true
-                restoreState = true
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
-                }
-            }
-        }
-    }
-
-    fun navigateToDetail(id: String, viewModel: ImageViewModel, from: NavBackStackEntry) {
-        if (from.lifecycleIsResumed()) {
-            currentViewModel = viewModel
-            navController.navigate("${ComposeDestinations.DETAIL}/$id") {
-                launchSingleTop = true
-                restoreState = true
-            }
-        }
-    }
-
-    private fun NavBackStackEntry.lifecycleIsResumed() =
-        this.lifecycle.currentState == Lifecycle.State.RESUMED
 }
