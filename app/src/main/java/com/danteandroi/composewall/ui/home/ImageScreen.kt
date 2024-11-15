@@ -99,7 +99,7 @@ fun ImageListScreen(
                         )
                     ) {
                         items(uiState.images.size, key = {
-                            uiState.images[it].id + it
+                            uiState.images[it].id
                         }) {
                             val image = uiState.images[it]
                             ImageItem(
@@ -136,7 +136,8 @@ fun ImageListScreen(
             }
                 if (uiState.isLoading) {
                     CircularProgressIndicator(
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(48.dp)
                     )
                 }
             }

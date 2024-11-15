@@ -1,8 +1,8 @@
 package com.danteandroi.composewall.ui.component
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
@@ -21,25 +21,24 @@ import com.danteandroi.composewall.R
  */
 @Composable
 fun BackdropTitle(
-    modifier: Modifier = Modifier,
-    isExpandedScreen: Boolean = false,
+    modifier: Modifier = Modifier.height(38.dp),
     title: String = stringResource(id = R.string.app_name),
     onTitleClick: () -> Unit = {}
 ) {
-    Column(modifier = Modifier
+    Column(
+        modifier = modifier
         .clickable {
             onTitleClick.invoke()
-        }) {
-        val spaceHeight = if (isExpandedScreen) 16.dp else 16.dp
-        Spacer(modifier = modifier.height(spaceHeight))
+        }, verticalArrangement = Arrangement.Center
+    ) {
+
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = title,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleSmall
         )
-        Spacer(modifier = modifier.height(spaceHeight))
     }
 }
 

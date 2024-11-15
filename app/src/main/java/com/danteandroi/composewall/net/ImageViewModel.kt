@@ -49,7 +49,7 @@ class ImageViewModel(private val imageRepository: ImageRepository = ImageReposit
                 if (state is UiStateSuccess && page > 1) {
                     state.copy(
                         config = menuItem.uiConfig,
-                        images = (state.images + result).distinctBy { it.id },
+                        images = (state.images + result),
                         isLoading = false
                     )
                 } else {

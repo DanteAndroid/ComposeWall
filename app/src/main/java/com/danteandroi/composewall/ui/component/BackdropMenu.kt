@@ -37,7 +37,6 @@ fun BackdropMenu(
     menus: List<MenuItem>,
     onMenuSelected: (index: Int) -> Unit = {}
 ) {
-    Spacer(modifier = Modifier.height(4.dp))
     var selectedIndex by rememberSaveable {
         mutableIntStateOf(0)
     }
@@ -54,7 +53,7 @@ fun BackdropMenu(
                             shape = RoundedCornerShape(16.dp)
                         )
                         .weight(1f)
-                        .height(48.dp)
+                        .height(38.dp)
                         .clickable {
                             selectedIndex = index
                             onMenuSelected.invoke(index)
@@ -70,15 +69,16 @@ fun BackdropMenu(
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(12.dp))
             menus.forEachIndexed { index, menuItem ->
                 Menu(
                     modifier = modifier
                         .background(
                             if (index == selectedIndex) MaterialTheme.colorScheme.inversePrimary else MaterialTheme.colorScheme.primary,
-                            shape = RoundedCornerShape(16.dp)
+                            shape = RoundedCornerShape(0.dp)
                         )
                         .fillMaxWidth()
-                        .height(48.dp)
+                        .height(38.dp)
                         .clickable {
                             selectedIndex = index
                             onMenuSelected.invoke(index)
