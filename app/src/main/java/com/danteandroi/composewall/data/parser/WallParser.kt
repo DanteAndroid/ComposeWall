@@ -11,10 +11,26 @@ import java.io.IOException
  */
 object WallParser : IParser {
 
+    private var category: String = ""
+    private val cachedMap = hashMapOf<String, String>()
+
+    fun getSeed(key: String) = cachedMap[key]
+
     override suspend fun parseImages(type: String, data: String): List<Image> {
         val images = arrayListOf<Image>()
         val document = Jsoup.parse(data)
         val elements = document.select("div[id=thumbs] figure")
+        runCatching {
+            // 提取 seed 值
+            val seed = document
+                .select("ul.pagination")
+                .attr("data-pagination")
+                .substringAfter("seed=")
+                .substringBefore("&")
+            if (category.isNotEmpty() && seed.isNotEmpty()) {
+                cachedMap[category] = seed
+            }
+        }
         for (element in elements) {
             try {
                 val img = element.selectFirst("img")
@@ -42,5 +58,10 @@ object WallParser : IParser {
         val id = thumbUrl.substringAfterLast("/").substringBefore(".")
         val tail = thumbUrl.substringAfterLast("small").replace(id, "wallhaven-$id")
         return "https://w.wallhaven.cc/full${tail}"
+    }
+
+    fun category(category: String): IParser {
+        this.category = category
+        return this
     }
 }

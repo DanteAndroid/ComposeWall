@@ -11,10 +11,10 @@ import retrofit2.http.Query
  * @author Dante
  * 2019-08-23
  */
+@Suppress("unused")
 interface WallHaven {
     companion object {
         const val WALL_HAVEN_RATIOS = "9x16,1x1,10x16,3x2,9x18,4x3,5x4"
-        const val WALL_HAVEN_PORTRAIT_RATIOS = "9x16,1x1,10x16,9x18"
 
         const val AT_LEAST_RESOLUTION = "800x1000"
         const val BETTER_RESOLUTION = "1080x1920"
@@ -22,6 +22,7 @@ interface WallHaven {
         const val SORT_RANDOM = "random"
         const val SORT_RELEVANCE = "relevance"
     }
+
     @Headers("User-Agent: $PC_USER_AGENT")
     @GET("search")
     suspend fun getWalls(
@@ -29,7 +30,8 @@ interface WallHaven {
         @Query("ratios") ratios: String,
         @Query("atleast") atLeast: String,
         @Query("page") page: Int? = null,
-        @Query("sorting") sort: String
+        @Query("sorting") sort: String,
+        @Query("seed") seed: String? = null,
     ): ResponseBody
 }
 
@@ -39,14 +41,9 @@ interface Yande {
     suspend fun getYande(@Query("page") page: Int): ResponseBody
 }
 
-interface Mania {
-    @Headers("User-Agent: $PC_USER_AGENT")
-    @GET("phone/wallpapers/{type}")
-    suspend fun getPosters(@Path("type") type: String, @Query("offset") index: Int): ResponseBody
-}
 
 interface Bcoderss {
     @Headers("User-Agent: $PC_USER_AGENT")
-    @GET("tag/{type}/page/{page}")
-    suspend fun getPosters(@Path("type") type: String, @Path("page") page: Int): ResponseBody
+    @GET("{tag}/page/{page}")
+    suspend fun getPosters(@Path("tag") tag: String, @Path("page") page: Int): ResponseBody
 }

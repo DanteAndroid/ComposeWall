@@ -5,6 +5,7 @@ import com.danteandroi.composewall.R
 /**
  * Net request APIs and CATEs
  */
+@Suppress("unused")
 object API {
 
     const val GITHUB_RAW = "https://raw.githubusercontent.com/DanteAndroid/ComposeWall/master/"
@@ -26,6 +27,7 @@ object API {
         )
     val bcoderssCategories =
         listOf(
+            "" to R.string.latest,
             "动漫" to R.string.anime,
             "美女" to R.string.girl,
             "4K" to R.string.four_k,

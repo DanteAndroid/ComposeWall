@@ -3,12 +3,9 @@ package com.danteandroi.composewall.net
 import com.danteandroi.composewall.data.IParser
 import com.danteandroi.composewall.data.Image
 import com.danteandroi.composewall.data.parser.BcoderssParser
-import com.danteandroi.composewall.data.parser.ManiaParser
 import com.danteandroi.composewall.data.parser.WallParser
 import com.danteandroi.composewall.data.parser.YandeParser
-import com.danteandroi.composewall.net.WallHaven.Companion.AT_LEAST_RESOLUTION
 import com.danteandroi.composewall.net.WallHaven.Companion.BETTER_RESOLUTION
-import com.danteandroi.composewall.net.WallHaven.Companion.WALL_HAVEN_PORTRAIT_RATIOS
 import com.danteandroi.composewall.net.WallHaven.Companion.WALL_HAVEN_RATIOS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -31,13 +28,14 @@ object ImageRepository {
                     val result =
                         NetService.getInstance().createApi<WallHaven>(baseUrl).getWalls(
                             type = if (isRandom) "" else category,
-                            ratios = if (isRandom) WALL_HAVEN_PORTRAIT_RATIOS else WALL_HAVEN_RATIOS,
-                            atLeast = if (isRandom) BETTER_RESOLUTION else AT_LEAST_RESOLUTION,
-                            page = page,
-                            sort = if (isRandom) WallHaven.SORT_RANDOM else WallHaven.SORT_RELEVANCE
+                            ratios = WALL_HAVEN_RATIOS,
+                            atLeast = BETTER_RESOLUTION,
+                            page = if (isRandom && page == 1) null else page,
+                            sort = WallHaven.SORT_RANDOM,
+                            seed = WallParser.getSeed(category)
                         )
                     getImages(
-                        WallParser,
+                        WallParser.category(category),
                         apiClazz.simpleName,
                         result.string()
                     )
@@ -51,18 +49,9 @@ object ImageRepository {
                         result.string()
                     )
                 }
-                Mania::class.java -> {
-                    val result = NetService.getInstance().createApi<Mania>(baseUrl)
-                        .getPosters(category, (page - 1) * 30)
-                    getImages(
-                        ManiaParser,
-                        apiClazz.simpleName,
-                        result.string()
-                    )
-                }
                 Bcoderss::class.java -> {
                     val result = NetService.getInstance().createApi<Bcoderss>(baseUrl)
-                        .getPosters(category, page)
+                        .getPosters(if (category.isEmpty()) category else "tag/$category", page)
                     getImages(
                         BcoderssParser,
                         apiClazz.simpleName,
