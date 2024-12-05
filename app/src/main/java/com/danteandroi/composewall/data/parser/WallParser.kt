@@ -1,6 +1,5 @@
 package com.danteandroi.composewall.data.parser
 
-import com.danteandroi.composewall.data.IParser
 import com.danteandroi.composewall.data.Image
 import org.jsoup.Jsoup
 import java.io.IOException
@@ -9,7 +8,7 @@ import java.io.IOException
  * @author Dante
  * 2019-09-03
  */
-object WallParser : IParser {
+data object WallParser : IParser {
 
     private var category: String = ""
     private val cachedMap = hashMapOf<String, String>()

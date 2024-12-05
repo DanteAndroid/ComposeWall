@@ -4,6 +4,9 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import coil.imageLoader
 import coil.request.ImageRequest
+import com.danteandroi.composewall.data.Image
+import com.danteandroi.composewall.data.parser.IParser
+import okhttp3.ResponseBody
 
 /**
  * @author Dante
@@ -34,4 +37,8 @@ suspend fun Context?.preloadImage(url: String): Drawable? {
             .build()
         it.imageLoader.execute(request).drawable
     }
+}
+
+suspend fun ResponseBody.parse(type: String, iParser: IParser): List<Image> {
+    return iParser.parseImages(type, this.string())
 }

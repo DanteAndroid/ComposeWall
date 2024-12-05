@@ -27,7 +27,6 @@ sealed class Destinations {
     data class Detail(val id: String)
 }
 
-
 @Composable
 fun rememberComposeAppState(
     scaffoldState: SnackbarHostState = SnackbarHostState(),

@@ -1,6 +1,5 @@
 package com.danteandroi.composewall.data.parser
 
-import com.danteandroi.composewall.data.IParser
 import com.danteandroi.composewall.data.Image
 import com.danteandroi.composewall.utils.removeBraces
 import org.json.JSONArray
@@ -11,7 +10,7 @@ import java.io.IOException
  * @author Dante
  * 2019-09-05
  */
-object ManiaParser : IParser {
+data object ManiaParser : IParser {
 
     override suspend fun parseImages(type: String, data: String): List<Image> {
         val images = arrayListOf<Image>()
